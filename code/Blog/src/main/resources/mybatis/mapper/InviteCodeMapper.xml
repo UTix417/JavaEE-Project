@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.InviteCodeMapper">
+
+    <insert id="createInviteCode">
+        insert into invitecode(invite_code_content,invite_code_state,user1_id,invite_code_date) values(#{inviteCodeContent},0,#{creatorId},#{inviteCodeDate})
+    </insert>
+
+    <update id="updateInviteCode">
+        update invitecode set invite_code_state = 1,user2_id = #{userId} where invite_code_content = #{inviteCodeContent}
+    </update>
+
+    <select id="getLastDateByUserId" resultType="java.util.Date">
+        select max(invite_code_date) from invitecode where user1_id = #{creatorId}
+    </select>
+
+    <resultMap id="invitecode" type="com.example.demo.pojo.InviteCode">
+        <id property="inviteCodeId" column="invite_code_id"></id>
+        <result property="inviteCodeContent" column="invite_code_content"></result>
+        <result property="inviteCodeState" column="invite_code_state"></result>
+        <result property="creatorId" column="creator_id"></result>
+        <result property="userId" column="user_id"></result>
+        <result property="inviteCodeDate" column="invite_code_date"></result>
+    </resultMap>
+</mapper>
