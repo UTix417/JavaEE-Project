@@ -25,14 +25,16 @@ class BlogApplicationTests {
     @Test
     void contextLoads() {
 //        System.out.println(userMapper.getUserById(1));
+
         User user1 = new User(1, "shit", "654321", 0, new Date(System.currentTimeMillis()), "pppp");
-        User user2 = new User(2, "shit", "654321", 0, new Date(System.currentTimeMillis()), "pppp");
+        User user2 = new User(5, "shit", "654321", 0, new Date(System.currentTimeMillis()), "pppp");
         Block block = new Block(null, "修改后的板块2", null, null);
         Text text = new Text(8,"芜湖起飞",2,new Date(System.currentTimeMillis()),1,user1);
         Page page = new Page(1, 5, new Date(System.currentTimeMillis()), "我是第五", new User(4, null, null, null, null, null));
         Message message = new Message(null, user1, user2, new Date(System.currentTimeMillis()), "你好");
         InviteCode inviteCode = new InviteCode(null,"ASDFGHJ",null,1,2,new Date(System.currentTimeMillis()));
-
+        userMapper.addUser(user2);
+        System.out.println(userMapper.getUserById(1));
 //        userMapper.updateUser(user);
 //        System.out.println(blockMapper.getAllBlocks());
 //        System.out.println(blockMapper.getBlockById(1));
