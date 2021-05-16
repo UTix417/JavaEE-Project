@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 /**
  * @author  王令
- * @date  ${DATE} ${TIME}
+ * @date  2021/5/16
  * @version 1.0
  */
 
