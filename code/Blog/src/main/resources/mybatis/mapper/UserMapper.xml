@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.UserMapper">
+
+    <select id="getUserById" resultMap="user">
+        select * from user where user_id = #{userId}
+    </select>
+
+    <insert id="addUser">
+        insert into user(user_name,user_password,user_level,user_create_time,user_image_path) values(#{userName},#{userPassword},#{userLevel},#{userCreateTime},#{userImagePath})
+    </insert>
+
+    <update id="updateUser">
+        update user set user_name = #{userName},user_password = #{userPassword},user_level = #{userLevel},user_image_path = #{userImagePath}
+        where user_id = #{userId}
+    </update>
+    <resultMap id="user" type="user">
+        <id property="userId" column="user_id"></id>
+        <result property="userName" column="user_name"></result>
+        <result property="userPassword" column="user_password"></result>
+        <result property="userLevel" column="user_level"></result>
+        <result property="userCreateTime" column="user_create_time"></result>
+        <result property="userImagePath" column="user_image_path"></result>
+    </resultMap>
+</mapper>
