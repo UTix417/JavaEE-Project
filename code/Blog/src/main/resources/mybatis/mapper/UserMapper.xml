@@ -22,6 +22,13 @@
         </set>
         where user_id = #{userId}
     </update>
+    <update id="banUser">
+        update user
+        <set>
+            <if test="userLevel!=null">user_level = 0,</if>
+        </set>
+        where user_id = #{userId}
+    </update>
     <resultMap id="user" type="user">
         <id property="userId" column="user_id"></id>
         <result property="userName" column="user_name"></result>
