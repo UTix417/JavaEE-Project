@@ -14,6 +14,7 @@
 
     <update id="updateUser">
         update user set user_name = #{userName},user_password = #{userPassword},user_level = #{userLevel},user_image_path = #{userImagePath}
+        where user_id = #{userId}
     </update>
     <resultMap id="user" type="user">
         <id property="userId" column="user_id"></id>

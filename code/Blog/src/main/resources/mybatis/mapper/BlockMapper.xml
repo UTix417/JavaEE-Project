@@ -12,6 +12,10 @@
         select * from block where block_id = #{blockId}
     </select>
 
+    <select id="getBlockByLevel" resultMap="block">
+        select * from block where block_level <![CDATA[ <= ]]> #{level}
+    </select>
+
     <update id="updateBlock">
         update block
         <set>
