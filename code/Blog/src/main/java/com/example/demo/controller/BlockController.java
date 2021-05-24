@@ -49,7 +49,11 @@ public class BlockController {
 //    获取对应板块的信息
     @ResponseBody
     @GetMapping("/getBlockById/{id}")
-    public Block getBlockById(@PathVariable("id") int blockId){
+    public Block getBlockById(@PathVariable("id") int blockId, HttpSession session){
+        /*
+        edit by 李肖帆
+        */
+        session.setAttribute("blockid",blockId);
         return blockMapper.getBlockById(blockId);
     }
 
