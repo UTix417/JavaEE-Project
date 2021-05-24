@@ -26,11 +26,11 @@
         }
         .userRow{
             padding-left: 20px;
-            background-color: #abc;
-            border: 1px solid #777;
+            background-color: #66CCFF;
+            border: 1px solid #FFFFFF;
         }
         .toFriendDiv{
-            background-color: #888;
+            background-color: #66CCFF;
         }
         .activeFriend{
             background-color: #FF0;
@@ -56,7 +56,7 @@
         var socket;
         var currentUserId;
         window["userArr"] = [];
-        var data = {};
+        var data = {};//实现方案是通过心跳把当前所在的用户界面信息发送给后端，实现刷新
         var heartCheck = {
             timeout: 30000,
             timeoutObj: null,
@@ -80,7 +80,7 @@
         };
         $.get("/MessageUsers", "json", function(users) {
             $.get("MessageRecentUser","json",function (userid){
-                currentUserId=userid;
+                currentUserId=userid;//存储现在会话的用户窗口
             });
             console.log(users);
             window["userArr"] = users;
@@ -148,7 +148,7 @@
                     //拿到任何消息都说明当前连接是正常的,心跳续签
                     heartCheck.start();
                     let data=JSON.parse(message);
-                    $(".msghisDiv").empty();
+                    $(".msghisDiv").empty();//刷新对话区域
                     for(let i=0;i<data.length;i++){
                         let fromId=data[i].fromId;
                         let context=data[i].context;
@@ -182,14 +182,7 @@
                 data["toId"] = toId;
                 data["context"] = msg;
                 console.log(JSON.stringify(data));
-                $(".msghisDiv .his_" + toId).append('<div><b>发送：</b>' + formatTime(new Date(), 'yyyy-MM-dd HH:mm:ss') + '<br>' + msg + '</div>');
-                data["fromId"]=function (){
-                    let fromId=null;
-                    $.get("MessageRecentUser","json",function (userid){
-                        fromId=userid;
-                    });
-                    return fromId;
-                };
+                data["fromId"]=currentUserId;
                 data["type"]="message";
                 socket.send(JSON.stringify(data));
             }
