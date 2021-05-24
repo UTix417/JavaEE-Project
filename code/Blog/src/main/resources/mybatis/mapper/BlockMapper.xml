@@ -8,16 +8,8 @@
         select * from block
     </select>
 
-    <insert id="addBlock">
-        insert into block(block_id,block_name,block_level,block_number) values(#{block_id},#{block_name},#{block_level},#{block_number})
-    </insert>
-
     <select id="getBlockById" resultMap="block">
         select * from block where block_id = #{blockId}
-    </select>
-
-    <select id="getBlockByLevel" resultMap="block">
-        select * from block where block_level <![CDATA[ <= ]]> #{level}
     </select>
 
     <update id="updateBlock">

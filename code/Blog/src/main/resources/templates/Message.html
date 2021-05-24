@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>私信</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery.serializeJSON/2.9.0/jquery.serializejson.js"></script>
+    <style>
+        html *{
+            padding: 5px;
+        }
+        .userlist{
+            width: 30%;
+            float: left;
+        }
+        .chatarea{
+            width: 70%;
+            float: right;
+            background-color: gray;
+            display: none;
+        }
+        .userRow{
+            padding-left: 20px;
+            background-color: #abc;
+            border: 1px solid #777;
+        }
+        .toFriendDiv{
+            background-color: #888;
+        }
+        .activeFriend{
+            background-color: #FF0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="userlist">
+            <div class="friendlistWrapper">
+                <div><b>好友列表：</b></div>
+                <div class="friendlist"></div>
+            </div>
+        </div>
+        <div class="chatarea">
+            <div class="toFriendDiv">给<span class="toFriend"></span>私信</div>
+            <div class="msghisDiv"></div>
+            <textarea class="msgarea form-control"></textarea><br>
+            <button type="button" onclick="sendMsg()" class="btn btn-info waves-effect waves-light">发送</button>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var socket;
+        var currentUserId;
+        window["userArr"] = [];
+        var data = {};
+        var heartCheck = {
+            timeout: 30000,
+            timeoutObj: null,
+            serverTimeoutObj: null,
+            start: function() {
+                console.log('start heartCheck');
+                var self = this;
+                this.timeoutObj && clearTimeout(this.timeoutObj);
+                this.serverTimeoutObj && clearTimeout(this.serverTimeoutObj);
+                this.timeoutObj = setTimeout(function() {
+                    console.log('heartCheck doing...');
+                    //发送测试信息，后端收到后，返回一个消息
+                    data["type"] = "heartbeat";
+                    data["fromId"] = currentUserId;
+                    socket.send(JSON.stringify(data));
+                    self.serverTimeoutObj = setTimeout(function() {
+                        socket.close();
+                    }, self.timeout);
+                }, this.timeout);
+            }
+        };
+        $.get("/MessageUsers", "json", function(users) {
+            $.get("MessageRecentUser","json",function (userid){
+                currentUserId=userid;
+            });
+            console.log(users);
+            window["userArr"] = users;
+            $(".friendlist").empty();
+            for (let i = 0; i < users.length; i++) {
+                let id = users[i].id;
+                let username = users[i].username;
+                if (currentUser.id != id) {
+                    $(".friendlist").append('<div class="userRow form-control" data-id="' + id + '"><span>' + username + '</span><span>(' + account + ')</span></div>');
+                }
+            }
+            $(".userRow").on("dblclick", function(e) {
+                let node = $(e.target)[0];
+                $(".msgarea").val("");
+                // 期待双击div.userRow,但实际上有可能双击了它的2个span子节点,所以需获取到div.userRow
+                let targetNode = null;
+                if ($(node).hasClass("userRow")) {
+                    targetNode = $(node);
+                } else {
+                    targetNode = $(node).parent();
+                }
+                $(".userRow").removeClass("activeFriend");
+                targetNode.addClass("activeFriend");
+                let id = targetNode.attr("data-id");
+                let username = targetNode.children("span:eq(0)").text();
+                let account = targetNode.children("span:eq(1)").text();
+                $(".toFriend").text(username + account);
+                $(".toFriend").attr("toId", id);
+                data["toId"]=id;
+                $(".chatarea").show();
+                $(".msghisDiv div[class^=his_]").hide();
+                if ($(".msghisDiv .his_" + id).length == 0) {
+                    $(".msghisDiv").append('<div class="his_' + id + '"></div>');
+                }
+                $(".msghisDiv .his_" + id).show();
+                $(".userRow[data-id=" + id + "]").addClass("activeFriend");
+            });
+            openSocket();
+        });
+        function openSocket() {
+            if (typeof(WebSocket) == "undefined") {
+                console.log("您的浏览器不支持WebSocket");
+            } else {
+                console.log("您的浏览器支持WebSocket");
+                //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
+                var curId = $(".curAccount").attr("id");
+                var socketUrl = window.location.origin.replace("https","ws").replace("http","ws") + "/test?fromId=" + curId;
+                console.log(socketUrl);
+                if (socket != null) {
+                    socket.close();
+                    socket = null;
+                }
+                socket = new WebSocket(socketUrl);
+                //打开事件
+                socket.onopen = function() {
+                    console.log("websocket已打开");
+                    //socket.send("这是来自客户端的消息" + location.href + new Date());
+                    //心跳检测重置
+                    heartCheck.start();
+                };
+                //获得消息事件
+                socket.onmessage = function(message) {
+                    // 发现消息进入    开始处理前端触发逻辑
+                    // console.log(event);
+                    //拿到任何消息都说明当前连接是正常的,心跳续签
+                    heartCheck.start();
+                    let data=JSON.parse(message);
+                    $(".msghisDiv").empty();
+                    for(let i=0;i<data.length;i++){
+                        let fromId=data[i].fromId;
+                        let context=data[i].context;
+                        let Time=data[i].time;
+                        $(".msghisDiv").append('<div class="his_' + fromId + '"></div>');
+                        $(".msghisDiv .his_" + fromId).append('<div>' + formatTime(Time, 'yyyy-MM-dd HH:mm:ss') + '<br>' + context + '<div>');
+                        }
+                    $(".chatarea").show();
+                };
+                //关闭事件
+                socket.onclose = function(event) {
+                    console.log(event);
+                    console.log("websocket已关闭");
+                };
+                //发生了错误事件
+                socket.onerror = function() {
+                    console.log("websocket发生了错误");
+                }
+            }
+        }
+        function sendMsg() {
+            if (typeof(WebSocket) == "undefined") {
+                console.log("您的浏览器不支持WebSocket");
+            } else {
+                console.log("您的浏览器支持WebSocket");
+                let toId = $(".userRow.activeFriend").attr("data-id");
+                let msg = $(".msgarea").val();
+                console.log(toId + "->" + msg);
+                let data = {};
+                data["fromId"] = $(".curAccount").attr("id");
+                data["toId"] = toId;
+                data["context"] = msg;
+                console.log(JSON.stringify(data));
+                $(".msghisDiv .his_" + toId).append('<div><b>发送：</b>' + formatTime(new Date(), 'yyyy-MM-dd HH:mm:ss') + '<br>' + msg + '</div>');
+                data["fromId"]=function (){
+                    let fromId=null;
+                    $.get("MessageRecentUser","json",function (userid){
+                        fromId=userid;
+                    });
+                    return fromId;
+                };
+                data["type"]="message";
+                socket.send(JSON.stringify(data));
+            }
+        }
+    </script>
+</body>
+</html>

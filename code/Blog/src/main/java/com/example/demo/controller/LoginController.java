@@ -41,10 +41,9 @@ public class LoginController {
     }
 
     @RequestMapping("/register")
-    public String userRegister(String userName,String userPassword, HttpSession session){
+    public String userRegister(String userName,String userPassword){
         User user = new User(null, userName, userPassword, 1, new Date(System.currentTimeMillis()), null);
         userMapper.addUser(user);
-        session.setAttribute("user",user);
         return "redirect:/user/getAllBlock";
     }
 }
