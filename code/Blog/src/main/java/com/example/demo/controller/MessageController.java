@@ -1,30 +1,33 @@
 package com.example.demo.controller;
 
-
-import com.example.demo.pojo.Message;
+import com.example.demo.mapper.MessageMapper;
 import com.example.demo.pojo.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.List;
-/**
- * @author  王令
- * @date  ${DATE} ${TIME}
- * @version 1.0
- */
 
-@RestController
+@Controller
 public class MessageController {
-
-    @Autowired
-    private MessageController messageController;
-
-//    获取与该用户有过私信联系的用户信息
-    @GetMapping("/getMessageUser/{userid}")
-    public List<User> getMessageUser(@PathVariable("uesrid") int userId){
-        return messageController.getMessageUser(userId);
+    @Resource
+    private MessageMapper messageMapper;
+    @GetMapping("/Message")
+    public String Message(){
+        return "/Message";
     }
-
+    @GetMapping("/MessageUsers")
+    public ResponseEntity<List<User>>getallusers(HttpSession session){
+        System.out.println("MessageUsers");
+        User now= (User) session.getAttribute("user");
+        return ResponseEntity.ok(messageMapper.getMessageUser(now.getUserId()));
+    }
+    @GetMapping("/MessageRecentUser")
+    public ResponseEntity<String> MessageRecentUser(HttpSession session){
+        User now= (User) session.getAttribute("user");
+        return ResponseEntity.ok(now.getUserId().toString());
+    }
 }

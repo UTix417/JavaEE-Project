@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>发帖</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery.serializeJSON/2.9.0/jquery.serializejson.js"></script>
+
+</head>
+<body>
+    <div class="container" >
+        <div class="jumbotron" style="background-color: #66CCFF">
+            <h1 style="color: #FFFFFF"><span class="glyphicon glyphicon-pencil" aria-hidden="true" style="color: #FFFFFF"></span> 发帖 </h1>
+        </div>
+        <form id="TextBody" name="TextBody">
+            <h2>标题</h2>
+            <textarea id="title" autofocus required name="title" style="width: 100%;height: 50px;"onblur="this.value=this.value.trim()"></textarea>
+            <h2>正文</h2>
+            <textarea id="content" name="content"  required style="width: 100%;height: 350px;"onblur="this.value=this.value.trim()"></textarea>
+        </form>
+        <button id="PublishButton" onclick="useAjax()" type="button">
+            <p><span class="glyphicon glyphicon-send" aria-hidden="true"></span>发帖</p>
+        </button>
+    </div>
+    <script>
+        function useAjax(){
+            var data1=JSON.stringify($('#TextBody').serializeJSON());
+            $.ajax({
+                type:"POST",
+                url:"/TextPublish",
+                dataType:"text",
+                data:data1,
+                contentType:"application/json;charset=UTF-8",
+                success: function (result) {//result:响应的数据
+                    alert(result); // 请求成功时的回调函数
+                    location.href="";//跳转
+                },
+                error: function () {
+                    alert('ajax Fail..'); // 请求失败时的回调函数
+                }
+            });
+        };
+    </script>
+</body>
+</html>

@@ -1,7 +1,6 @@
 package com.example.demo.mapper;
 
 import com.example.demo.pojo.InviteCode;
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -12,7 +11,6 @@ import java.util.Date;
  */
 //本接口用来管理邀请码
 @Repository
-@Mapper
 public interface InviteCodeMapper {
     //某个用户创建了一个邀请码
     public int createInviteCode(InviteCode inviteCode);
@@ -22,5 +20,4 @@ public interface InviteCodeMapper {
 
     //使用验证码,这里的inviteCode只需要有使用者的ID以及验证码内容
     public int updateInviteCode(InviteCode inviteCode);
-
 }
