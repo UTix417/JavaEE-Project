@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.demo.mapper.BlockMapper;
 import com.example.demo.mapper.InviteCodeMapper;
 import com.example.demo.mapper.UserMapper;
@@ -10,9 +11,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
@@ -32,6 +31,7 @@ public class UserController {
     UserMapper userMapper;
     @Autowired
     InviteCodeService inviteCodeService;
+
     //本方法实现登录后返回所有的板块信息,同时在用户每次登录时都会检查其是否已经到达升级时限
     @ResponseBody
     @RequestMapping("/getAllBlock")
@@ -104,4 +104,15 @@ public class UserController {
             return "邀请码错误或者您已经是会员用户";//输入邀请码的页面
         }
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/banUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public int deletePage(@RequestBody JSONObject jsonParam){
+        int userid=0;
+        int res=0;
+        userid=jsonParam.getInteger("userId");
+        res = userMapper.banUser(userid);
+        return res;
+    }
+
 }

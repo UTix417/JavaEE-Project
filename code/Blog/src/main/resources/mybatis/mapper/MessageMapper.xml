@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.MessageMapper">
+
+    <select id="getMessageUser" resultMap="user">
+        select distinct user.user_id,user.user_name ,user_image_path
+        from user,message
+        where
+        (message.message_user1 = #{userId} and message.message_user2 = user.user_id)
+        or
+        (message.message_user2 = #{userId} and message.message_user1 = user.user_id)
+    </select>
+
+    <select id="getAllMessageByUserId" resultMap="message">
+        select * from message where message_user1 = #{senderId} and message_user2 = #{recipientId}
+    </select>
+
+    <insert id="addMessage">
+        insert into message(message_user1,message_user2,message_send_time,message_content) values(#{user1.userId},#{user2.userId},#{messageSendTime},#{messageContent})
+    </insert>
+
+    <resultMap id="message" type="com.example.demo.pojo.Message">
+        <id property="messageId" column="message_id"></id>
+        <result property="messageSendTime" column="message_send_time"></result>
+        <result property="messageContent" column="message_content"></result>
+        <association property="user1" javaType="com.example.demo.pojo.User">
+            <id property="userId" column="user_id"></id>
+            <result property="userName" column="user_name"></result>
+            <result property="userPassword" column="user_password"></result>
+            <result property="userLevel" column="user_level"></result>
+            <result property="userCreateTime" column="user_create_time"></result>
+            <result property="userImagePath" column="user_image_path"></result>
+        </association>
+        <association property="user2" javaType="com.example.demo.pojo.User">
+            <id property="userId" column="user_id"></id>
+            <result property="userName" column="user_name"></result>
+            <result property="userPassword" column="user_password"></result>
+            <result property="userLevel" column="user_level"></result>
+            <result property="userCreateTime" column="user_create_time"></result>
+            <result property="userImagePath" column="user_image_path"></result>
+        </association>
+    </resultMap>
+
+    <resultMap id="user" type="user">
+        <id property="userId" column="user_id"></id>
+        <result property="userName" column="user_name"></result>
+        <result property="userPassword" column="user_password"></result>
+        <result property="userLevel" column="user_level"></result>
+        <result property="userCreateTime" column="user_create_time"></result>
+        <result property="userImagePath" column="user_image_path"></result>
+    </resultMap>
+</mapper>

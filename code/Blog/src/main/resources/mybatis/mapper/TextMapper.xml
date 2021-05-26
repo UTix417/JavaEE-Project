@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.TextMapper">
+
+    <select id="getTextsByBlockId" resultMap="text">
+        select text_id,text_title,text_Status,text_create_time,block_id,text.user_id,user_name,user_level,user_image_path
+        from text,user
+        where text.user_id = user.user_id and block_id = #{blockId}
+    </select>
+
+    <select id="getTextsByTitle" resultMap="text">
+        select text_id,text_title,text_Status,text_create_time,block_id,text.user_id,user_name,user_level,user_image_path
+        from text,user
+        where text.user_id = user.user_id and text_title like concat('%',#{blockTitle},'%')
+    </select>
+
+    <insert id="addText" >
+        insert into text(text_title,user_id,text_status,text_create_time,block_id) values(#{textTitle},#{user.userId},1,#{textCreateTime},#{blockId})
+    </insert>
+
+    <update id="updateText">
+        update text
+        <set>
+            <if test="textTitle != null">text_title = #{textTitle},</if>
+            <if test="blockId != null">block_id = #{blockId},</if>
+            <if test="textStatus != null">text_status = #{textStatus},</if>
+        </set>
+        where text_id = #{textId}
+    </update>
+
+    <delete id="deleteText">
+        delete from text where text_id = #{text_id}
+    </delete>
+    <resultMap id="text" type="com.example.demo.pojo.Text">
+        <id property="textId" column="text_id"></id>
+        <result property="textTitle" column="text_title"></result>
+        <result property="textStatus" column="text_status"></result>
+        <result property="textCreateTime" column="text_create_time"></result>
+        <result property="blockId" column="block_id"></result>
+        <association property="user" javaType="com.example.demo.pojo.User">
+            <id property="userId" column="user_id"></id>
+            <result property="userName" column="user_name"></result>
+            <result property="userPassword" column="user_password"></result>
+            <result property="userLevel" column="user_level"></result>
+            <result property="userCreateTime" column="user_create_time"></result>
+            <result property="userImagePath" column="user_image_path"></result>
+        </association>
+    </resultMap>
+
+</mapper>
