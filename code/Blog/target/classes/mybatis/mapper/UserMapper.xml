@@ -13,20 +13,7 @@
     </insert>
 
     <update id="updateUser">
-        update user
-        <set>
-            <if test="userName!=null">user_name = #{userName},</if>
-            <if test="userPassword!=null">user_password = #{userPassword},</if>
-            <if test="userLevel!=null">user_level = #{userLevel},</if>
-            <if test="userName!=userImagePath">user_image_path = #{userImagePath}</if>
-        </set>
-        where user_id = #{userId}
-    </update>
-    <update id="banUser">
-        update user
-        <set>
-            <if test="userLevel!=null">user_level = 0,</if>
-        </set>
+        update user set user_name = #{userName},user_password = #{userPassword},user_level = #{userLevel},user_image_path = #{userImagePath}
         where user_id = #{userId}
     </update>
     <resultMap id="user" type="user">
