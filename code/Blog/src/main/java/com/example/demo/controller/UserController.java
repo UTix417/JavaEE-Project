@@ -55,6 +55,14 @@ public class UserController {
         return user;
     }
 
+    //本方法用于用户获取自己的信息
+    @ResponseBody
+    @RequestMapping("/getMyInfo")
+    public User getMyInfo(HttpSession session){
+        User user = (User) session.getAttribute("user");
+        return user;
+    }
+
     //本方法用来实现用户更新自己的信息,传所有要更新的User属性就可以，但UserId是必备的，同时密码不应该在这里修改
     @ResponseBody
     @RequestMapping("/updateInfo")
