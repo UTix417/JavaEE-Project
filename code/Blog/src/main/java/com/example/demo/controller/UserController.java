@@ -54,7 +54,7 @@ public class UserController {
         User user = userMapper.getUserById(userId);
         return user;
     }
-    
+
     //本方法用于用户获取自己的信息
     @ResponseBody
     @RequestMapping("/getMyInfo")
