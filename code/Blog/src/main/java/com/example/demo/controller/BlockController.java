@@ -60,7 +60,11 @@ public class BlockController {
 
     @ResponseBody
     @RequestMapping(value = "/addBlock", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public int deletePage(@RequestBody JSONObject jsonParam){
+    public int addBlock(@RequestBody JSONObject jsonParam,HttpSession session){
+        int level=0;
+        level = (int) session.getAttribute("level");
+        if(level<=3)
+            return -1;
         int block_id,block_level,block_number;
         String block_name;
         int res=0;
