@@ -25,4 +25,7 @@ public interface PageMapper {
     //根据帖子id查询最大楼层数用来在回复之前确定该回复的楼层
     public int getMaxFloor(int textId);
 
+    //根据帖子id查找发帖人
+    public int getTextmaster(int textId);
+
 }

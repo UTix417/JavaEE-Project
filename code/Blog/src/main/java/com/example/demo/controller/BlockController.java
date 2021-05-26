@@ -50,6 +50,12 @@ public class BlockController {
         return "getAllBlocks";
     }
 
+    //以list形式返回所有板块信息
+    @ResponseBody
+    @GetMapping("/getAllBlocks_visitor")
+    public List <Block> getAllBlocks(){
+        return blockMapper.getAllBlocks();
+    }
 
 
 //    获取对应板块的信息
@@ -65,12 +71,13 @@ public class BlockController {
         return "oneBlock";
     }
 
+    //增加板块 需求等级大于3
     @ResponseBody
     @RequestMapping(value = "/addBlock", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public String addBlock(@RequestBody JSONObject jsonParam,HttpSession session,Model model){
         User now_user= (User) session.getAttribute("user");
         int level = now_user.getUserLevel();
-        if(level<=3)
+        if(level<=3)//等级不够则无法删除
             return "add_fail";
         int block_id,block_level,block_number;
         String block_name;
