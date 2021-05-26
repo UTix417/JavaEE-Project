@@ -107,7 +107,7 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(value = "/banUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public int deletePage(@RequestBody JSONObject jsonParam){
+    public int banUser(@RequestBody JSONObject jsonParam){
         int userid=0;
         int res=0;
         userid=jsonParam.getInteger("userId");
