@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 D:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\config\LoginHandlerInterceptor.java
 D:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\controller\TextPublishController.java
 D:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\pojo\Message.java
@@ -24,3 +25,31 @@ D:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\mapper\InviteCodeMapp
 D:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\controller\InviteController.java
 D:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\pojo\Block.java
 D:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\service\InviteCodeService.java
+=======
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\config\LoginHandlerInterceptor.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\controller\BlockController.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\mapper\InviteCodeMapper.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\pojo\Block.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\controller\TextController.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\service\LoginService.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\service\InviteCodeService.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\controller\UserController.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\pojo\Page.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\controller\TextPublishController.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\config\MyMVCConfig.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\pojo\Message.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\mapper\PageMapper.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\mapper\MessageMapper.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\controller\InviteController.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\BlogApplication.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\pojo\Text.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\controller\MessageController.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\controller\LoginController.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\controller\WebSocketController.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\mapper\UserMapper.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\pojo\InviteCode.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\pojo\User.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\mapper\TextMapper.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\controller\PageController.java
+F:\JavaEE-Project\code\Blog\src\main\java\com\example\demo\mapper\BlockMapper.java
+>>>>>>> Stashed changes
