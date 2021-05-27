@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,
+                                     initial-scale=1.0,
+                                     maximum-scale=1.0,
+                                     user-scalable=no">
+    <title>个人资料</title>
+    
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        //$.get("/getMyInfo", "json", function(users) {
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="jumbotron">
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+                <img id="pic" src="" class="img-circle">
+            </div>
+            <div class="col-lg-9 col-md-9 col-xs-9 col-sm-9">
+                <h1>
+                    <div class="form-inline row">
+                        <label id="username"></label>
+                        <div class="input-group mb-3 input-group-lg">
+                            <input class="form-control" name="" type="text" id="div1" style="display:none" />
+                        </div>
+
+                        <input  id="namebtn" type="button" class="btn btn-default btn-sm" onclick="changename()" value="更改昵称"></input>
+
+                    </div>
+                </h1>
+
+                <h4>
+                    <span id ='member' class="label label-primary">高级用户</span>
+                    <span id ='admin' class="label label-warning">管理员</span>
+                </h4>
+                <h3>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">用户id:</div>
+                        <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3" id="myid"></div>
+                        <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">注册日期:</div>
+                        <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3" id="birthday"></div>
+                        <div class="col"></div>
+                    </div>
+                    <div class="text-right">
+                        <a href="#ckey" class="btn btn-inverse btn-sm" data-toggle="collapse">密码修改</a>
+                    </div>
+
+                        <div id="ckey" class="collapse">
+
+                            <span>旧密码：</span>
+                            <input type="password" id="oldkey" class="form-control " placeholder="旧密码" />
+
+
+                            <span>新密码：</span>
+                            <input type="password" id="newkey" class="form-control" placeholder="新密码" />
+                            <button type="button" id="keybtn" class="btn btn-success">更改密码</button>
+
+
+                        </div>
+
+                </h3>
+            </div>
+
+        </div>
+
+    </div>
+    <script type="text/javascript">
+        var username="unknow";
+        var levelf=1;
+        var userid=0;
+        var userCreateTime="xxxx-yy-zz";
+        var userImagePath="../img/捕获.png";
+        var nowuser;
+        $.get("/getMyInfo", "json", function(user){
+            nowuser=user;
+        username=nowuser.username;
+        userid=nowuser.userId;
+        levelf=nowuser.userLevel;
+        userCreateTime=nowuser.userCreateTime;
+        userImagePath=nowuser.userImagePath;
+        });
+
+        $("#member").css("display", "none");
+        $("#admin").css("display", "none");
+
+        if(levelf==1) {
+            $("#member").css("display", "");
+        }else if(levelf==2)
+        {
+            $("#admin").css("display", "");
+        }
+        //nowuser.username=username;
+        document.getElementById("username").innerHTML = username;
+        document.getElementById("myid").innerHTML = userid;
+        document.getElementById("birthday").innerHTML = userCreateTime;
+        document.getElementById("pic").src=userImagePath;
+
+        function changename()
+        {
+
+            let thisbtn=document.getElementById("namebtn")
+            //thisbtn.value="确定";
+            if(thisbtn.value=="更改昵称")
+            {
+                $("#username").css("display", "none");
+                document.getElementById("div1").value=username;
+                document.getElementById("div1").style.display="";
+                 thisbtn.value="确定";
+                 thisbtn.class="btn btn-success";
+            }else
+            {
+                //thisbtn.value="更改昵称";
+                username=document.getElementById("div1").value;
+                //$("#username").css("display", "");
+                nowuser.username=username;//加上这句话就后面就运行不出来了
+                //document.getElementById("div1").style.display="none";
+                $.ajax({
+                    type:"POST",
+                    url:"/updateInfo",
+                    data:"user="+nowuser,
+                    contentType:"application/json;charset=UTF-8",
+                    success: function (result) {//result:响应的数据
+                        alert('更改成功'); // 请求成功时的回调函数
+                        //document.getElementById("username").innerHTML = nowuser.username;
+                        $("#username").css("display", "");
+                        document.getElementById("div1").style.display="none";
+                        thisbtn.value="更改昵称";
+                        thisbtn.class="btn btn-default btn-xs";
+                    },
+                    error: function () {
+                        alert('更改失败'); // 请求失败时的回调函数
+                        $("#username").css("display", "");
+                        //document.getElementById("username").innerHTML = nowuser.username;
+                        document.getElementById("div1").style.display="none";
+                        thisbtn.value="更改昵称";
+                        thisbtn.class="btn btn-default btn-xs";
+                    }
+                });
+
+            }
+        }
+        $('#keybtn').click(function () {
+            var newkey = $("#newkey").val();
+            var oldkey = $("#oldkey").val();
+            $.ajax({
+                url: "/updatePassword/"+userid,
+                type: "post",
+                dataType: "json",
+                data : {
+                    "oldPassword": oldkey,
+                    "newPassword": newkey
+                },
+                success: function (data) {
+                    if(data==true)
+                        //这里的路径是相对于js的路径
+                        alert("更改成功")
+                    else
+                        alert("旧密码错误或未登录")
+                },
+                error: function (e) {
+                    console.log("faild")
+                    alert("连接丢失")
+                }
+            })
+        });
+
+    </script>
+</div>
+
+
+
+
+</body>
+</html>
