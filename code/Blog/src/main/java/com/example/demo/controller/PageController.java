@@ -43,16 +43,28 @@ public class PageController {
         return pages;
     }
 
+    //该方法用来删除帖子 传入json表单 检测等级和发帖人的ID
     @ResponseBody
     @RequestMapping(value = "/deletePage", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public int deletePage(@RequestBody JSONObject jsonParam){
+    public int deletePage(@RequestBody JSONObject jsonParam,HttpSession session){
+        User now_user= (User) session.getAttribute("user");
+        int level = now_user.getUserLevel();
         int textId;
         int pageFloor;
         int res=0;
         textId=jsonParam.getInteger("textId");
         pageFloor=jsonParam.getInteger("pageFloor");
-        res = pageMapper.deletePage(textId,pageFloor);
-        return res;
+        if(level>=3){//如果为管理员，则可以直接删除
+            res = pageMapper.deletePage(textId,pageFloor);
+            return res;
+        }
+        else if(now_user.getUserId()==pageMapper.getTextmaster(textId)){//如果是发帖人进行删贴，也可以删除
+            res = pageMapper.deletePage(textId,pageFloor);
+            return res;
+        }
+        else //否则返回错误-1
+            return -1;
+
     }
 
 //    JSON文件的测试

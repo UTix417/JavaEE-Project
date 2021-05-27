@@ -9,7 +9,7 @@
     </select>
 
     <insert id="addUser">
-        insert into user(user_name,user_password,user_level,user_create_time,user_image_path,user_state) values(#{userName},#{userPassword},#{userLevel},#{userCreateTime},#{userImagePath},0)
+        insert into user(user_name,user_password,user_level,user_create_time,user_image_path) values(#{userName},#{userPassword},#{userLevel},#{userCreateTime},#{userImagePath})
     </insert>
 
     <update id="updateUser">
@@ -18,16 +18,17 @@
             <if test="userName!=null">user_name = #{userName},</if>
             <if test="userPassword!=null">user_password = #{userPassword},</if>
             <if test="userLevel!=null">user_level = #{userLevel},</if>
-            <if test="userName!=userImagePath">user_image_path = #{userImagePath},</if>
-            <if test="userState!=null">user_state = #{userState}</if>
+            <if test="userName!=userImagePath">user_image_path = #{userImagePath}</if>
         </set>
         where user_id = #{userId}
     </update>
-
     <update id="banUser">
-        call banuser(#{userId},#{outTime})
+        update user
+        <set>
+            <if test="userLevel!=null">user_level = 0,</if>
+        </set>
+        where user_id = #{userId}
     </update>
-
     <resultMap id="user" type="user">
         <id property="userId" column="user_id"></id>
         <result property="userName" column="user_name"></result>
@@ -35,6 +36,5 @@
         <result property="userLevel" column="user_level"></result>
         <result property="userCreateTime" column="user_create_time"></result>
         <result property="userImagePath" column="user_image_path"></result>
-        <result property="userState" column="user_state"></result>
     </resultMap>
 </mapper>
