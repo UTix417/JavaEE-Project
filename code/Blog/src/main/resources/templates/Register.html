@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery.serializeJSON/2.9.0/jquery.serializejson.js"></script>
+
+</head>
+<body>
+<div id="Layer1" style="position:absolute; width:100%; height:100%; background-color: snow; z-index:-1">
+    <img src="https://i.loli.net/2021/05/27/LWN6zkZSBcoxRCI.jpg"  height="100%" width="100%"/>
+</div>
+<div class="container">
+    <div class="col-md-4" style="padding-top:20%;">
+        <form class="form-signin" action="/register" method="post">
+            <h2 class="form-signin-heading">注册</h2>
+            <p>用户名:</p>
+            <label for="userName" class="sr-only">用户名</label>
+            <input type="username" id="userName" name="userName" class="form-control" placeholder="用户名" required autofocus>
+            <p>密码:</p>
+            <label for="userPassword" class="sr-only">密码</label>
+            <input type="password" id="userPassword" name="userPassword" class="form-control" placeholder="Password" required>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
