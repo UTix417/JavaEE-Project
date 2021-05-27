@@ -77,7 +77,7 @@ public class UserController {
     public boolean updatePassword(@PathVariable("userId") int userId,Model model,String oldPassword,String newPassword,HttpSession session){
         String password = userMapper.getUserById(userId).getUserPassword();
         if (oldPassword.equals(password)){
-            userMapper.updateUser(new User(userId,null,newPassword,null,null,null));
+            userMapper.updateUser(new User(userId,null,newPassword,null,null,null,null));
             return true;
         }else {
             model.addAttribute("msg","旧密码错误，请确认密码正确");
@@ -112,8 +112,15 @@ public class UserController {
         int userid=0;
         int res=0;
         userid=jsonParam.getInteger("userId");
-        res = userMapper.banUser(userid);
+        //res = userMapper.banUser(userid);
         return res;
+    }
+
+    //本方法用来封禁一个用户请传入用户Id和解封时间,0代表封禁失败
+    @ResponseBody
+    @RequestMapping()
+    public int banUser(int userId,Date outTime){
+        return userMapper.banUser(userId,outTime);
     }
 
 }

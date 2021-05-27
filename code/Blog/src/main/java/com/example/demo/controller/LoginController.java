@@ -42,7 +42,7 @@ public class LoginController {
 
     @RequestMapping("/register")
     public String userRegister(String userName,String userPassword, HttpSession session){
-        User user = new User(null, userName, userPassword, 1, new Date(System.currentTimeMillis()), null);
+        User user = new User(null, userName, userPassword, 1,0, new Date(System.currentTimeMillis()), null);
         userMapper.addUser(user);
         session.setAttribute("user",user);
         return "redirect:/user/getAllBlock";
