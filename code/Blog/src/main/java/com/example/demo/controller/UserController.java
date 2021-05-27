@@ -108,11 +108,15 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(value = "/banUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public int deletePage(@RequestBody JSONObject jsonParam){
+    public int banUser(@RequestBody JSONObject jsonParam,HttpSession session){
+        User now_user= (User) session.getAttribute("user");
+        int level = now_user.getUserLevel();
+        if(level<3)//3等级以上的人才能BAN用户
+        return -1;
         int userid=0;
         int res=0;
-        userid=jsonParam.getInteger("userId");
-        res = userMapper.banUser(userid);
+        userid=jsonParam.getInteger("userId");//获取被ban人的id
+        res = userMapper.banUser(userid);//ban
         return res;
     }
 
