@@ -9,7 +9,7 @@
     </select>
 
     <insert id="addUser">
-        insert into user(user_name,user_password,user_level,user_create_time,user_image_path) values(#{userName},#{userPassword},#{userLevel},#{userCreateTime},#{userImagePath})
+       insert into user(user_name,user_password,user_level,user_create_time,user_image_path,user_state) values(#{userName},#{userPassword},#{userLevel},#{userCreateTime},#{userImagePath},0)
     </insert>
 
     <update id="updateUser">

@@ -67,8 +67,9 @@ public class UserController {
     //本方法用来实现用户更新自己的信息,传所有要更新的User属性就可以，但UserId是必备的，同时密码不应该在这里修改
     @ResponseBody
     @RequestMapping("/updateInfo")
-    public User updateUserInfo(User user,Model model){
-        model.addAttribute("user",user);
+    public User updateUserInfo(String userId,String userName,String img){
+        User user = new User(userId, userName, null, null, null, null, img);
+        userMapper.updateUser(user);
         return user;
     }
 
