@@ -22,6 +22,10 @@
         select max(page_floor) from page where text_id = #{textId}
     </select>
 
+    <select id="getTextmaster" resultType="int">
+        select user_name from text where text_id=#{textId}
+    </select>
+
     <resultMap id="page" type="com.example.demo.pojo.Page">
         <result property="textId" column="text_id"></result>
         <result property="pageFloor" column="page_floor"></result>
