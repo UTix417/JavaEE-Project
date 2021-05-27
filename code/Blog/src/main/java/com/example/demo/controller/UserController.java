@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * @author 朱威
@@ -106,26 +107,30 @@ public class UserController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/banUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public int banUser(@RequestBody JSONObject jsonParam,HttpSession session){
-        User now_user= (User) session.getAttribute("user");
-        int level = now_user.getUserLevel();
-        if(level<3)//3等级以上的人才能BAN用户
-        return -1;
-        int userid=0;
-        int res=0;
-
-        userid=jsonParam.getInteger("userId");
-        //res = userMapper.banUser(userid);
-
-        return res;
-    }
+//    @ResponseBody
+//    @RequestMapping(value = "/banUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+//    public int banUser(@RequestBody JSONObject jsonParam,HttpSession session){
+//        User now_user= (User) session.getAttribute("user");
+//        int level = now_user.getUserLevel();
+//        if(level<3)//3等级以上的人才能BAN用户
+//        return -1;
+//        int userid=0;
+//        int res=0;
+//
+//        userid=jsonParam.getInteger("userId");
+//        //res = userMapper.banUser(userid);
+//
+//        return res;
+//    }
 
     //本方法用来封禁一个用户请传入用户Id和解封时间,0代表封禁失败
     @ResponseBody
     @RequestMapping()
-    public int banUser(int userId,Date outTime){
+    public int banUser(int userId,Date outTime,HttpSession session){
+        User now_user= (User) session.getAttribute("user");
+        Integer userLevel = now_user.getUserLevel();
+        if (userLevel<3)//3等级以上的人才能BAN用户
+            return -1;
         return userMapper.banUser(userId,outTime);
     }
 
