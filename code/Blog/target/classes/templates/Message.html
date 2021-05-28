@@ -52,7 +52,7 @@
             <button type="button" onclick="sendMsg()" class="btn btn-info waves-effect waves-light">发送</button>
         </div>
     </div>
-    <script type="text/javascript">
+    <script>
         var socket;
         var currentUserId;
         window["userArr"] = [];
@@ -82,15 +82,12 @@
             $.get("MessageRecentUser","json",function (userid){
                 currentUserId=userid;//存储现在会话的用户窗口
             });
-            console.log(users);
             window["userArr"] = users;
             $(".friendlist").empty();
             for (let i = 0; i < users.length; i++) {
-                let id = users[i].id;
-                let username = users[i].username;
-                if (currentUser.id != id) {
-                    $(".friendlist").append('<div class="userRow form-control" data-id="' + id + '"><span>' + username + '</span><span>(' + account + ')</span></div>');
-                }
+                let id = users[i].userId;
+                let username = users[i].userName;
+                $(".friendlist").append('<div class="userRow form-control" data-id="' + id + '"><span>' + username + '</span></div>');
             }
             $(".userRow").on("dblclick", function(e) {
                 let node = $(e.target)[0];
@@ -118,6 +115,7 @@
                 $(".msghisDiv .his_" + id).show();
                 $(".userRow[data-id=" + id + "]").addClass("activeFriend");
             });
+
             openSocket();
         });
         function openSocket() {
@@ -126,8 +124,9 @@
             } else {
                 console.log("您的浏览器支持WebSocket");
                 //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
-                var curId = $(".curAccount").attr("id");
-                var socketUrl = window.location.origin.replace("https","ws").replace("http","ws") + "/test?fromId=" + curId;
+                //var curId = $(".curAccount").attr("id");
+                var socketUrl = window.location.origin.replace("https","ws").replace("http","ws") + "/WebSocket?curid="+currentUserId;
+                //alert(socketUrl);
                 console.log(socketUrl);
                 if (socket != null) {
                     socket.close();
@@ -137,7 +136,7 @@
                 //打开事件
                 socket.onopen = function() {
                     console.log("websocket已打开");
-                    //socket.send("这是来自客户端的消息" + location.href + new Date());
+                    socket.send("这是来自客户端的消息" + location.href + new Date());
                     //心跳检测重置
                     heartCheck.start();
                 };
@@ -150,9 +149,9 @@
                     let data=JSON.parse(message);
                     $(".msghisDiv").empty();//刷新对话区域
                     for(let i=0;i<data.length;i++){
-                        let fromId=data[i].fromId;
-                        let context=data[i].context;
-                        let Time=data[i].time;
+                        let fromId=data[i].user1;
+                        let context=data[i].messageContent;
+                        let Time=data[i].messageSendTime;
                         $(".msghisDiv").append('<div class="his_' + fromId + '"></div>');
                         $(".msghisDiv .his_" + fromId).append('<div>' + formatTime(Time, 'yyyy-MM-dd HH:mm:ss') + '<br>' + context + '<div>');
                         }
@@ -165,12 +164,14 @@
                 };
                 //发生了错误事件
                 socket.onerror = function() {
+                    //alert("!!!!!!!!!!!!!!!");
                     console.log("websocket发生了错误");
                 }
             }
         }
         function sendMsg() {
             if (typeof(WebSocket) == "undefined") {
+                alert("您的浏览器不支持WebSocket")
                 console.log("您的浏览器不支持WebSocket");
             } else {
                 console.log("您的浏览器支持WebSocket");

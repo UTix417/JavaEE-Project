@@ -80,24 +80,27 @@ public class BlockController {
         return "oneBlock";
     }
 
-    //增加板块 需求等级大于3
-    @ResponseBody
-    @RequestMapping(value = "/addBlock", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public String addBlock(@RequestBody JSONObject jsonParam,HttpSession session,Model model){
-        User now_user= (User) session.getAttribute("user");
-        int level = now_user.getUserLevel();
-        if(level<=3)//等级不够则无法删除
-            return "add_fail";
-        int block_id,block_level,block_number;
-        String block_name;
-        int res=0;
-        block_id=jsonParam.getInteger("block_id");
-        block_name=jsonParam.getString("block_name");
-        block_level=jsonParam.getInteger("block_level");
-        block_number=jsonParam.getInteger("block_number");
-        res=blockMapper.addBlock(block_id,block_name,block_level,block_number);
-        return "add_success";
-    }
 
+    @RequestMapping("blockAdd")
+    public String blockadd(@RequestParam(value = "block_id") Integer id,@RequestParam(value = "block_name") String name,@RequestParam(value = "level") Integer level,
+                           @RequestParam(value = "user_level") Integer u_level,Model model) {
+        String msg;
+        if (u_level < 3) {//等级不够则无法添加
+            System.out.println(222);
+            msg = "无添加资格";
+            model.addAttribute("msg", msg);
+            return "main";}
+        blockMapper.addBlock(id, name, level, 0);
+        msg = "添加成功";
+        model.addAttribute("msg", msg);
+        System.out.println(111);
+        return "main";
+    }
+    
+    @RequestMapping("/blockadd")
+    public String blockadd(@RequestParam(value = "block_id") Integer id,@RequestParam(value = "block_name") String name,@RequestParam(value = "block_level") Integer level) {
+        blockMapper.addBlock(id, name, level, 0);
+        return "main";
+        }
 
 }

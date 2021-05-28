@@ -33,8 +33,10 @@ public class PageController {
     @ResponseBody
     @RequestMapping("/getAllTexts/{blockId}")
     public List<Text> getAllTexts(@PathVariable("blockId") int blockId, Model model){
-        List<Text> texts = textMapper.getTextsByBlockId(blockId);
-        return texts;
+        List<Text> text1 = textMapper.getTextsByBlockId(blockId,1);
+        List<Text> text2 = textMapper.getTextsByBlockId(blockId,2);
+        text2.addAll(text1);
+        return text2;
     }
 
     //本方法用来进入帖子查看详细内容

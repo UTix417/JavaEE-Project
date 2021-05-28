@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * @author 朱威
@@ -55,9 +56,10 @@ public class UserController {
         return user;
     }
 
+    //本方法用于用户获取自己的信息
     @ResponseBody
     @RequestMapping("/getMyInfo")
-    public User getUserInfo(HttpSession session){
+    public User getMyInfo(HttpSession session){
         User user = (User) session.getAttribute("user");
         return user;
     }
@@ -65,8 +67,9 @@ public class UserController {
     //本方法用来实现用户更新自己的信息,传所有要更新的User属性就可以，但UserId是必备的，同时密码不应该在这里修改
     @ResponseBody
     @RequestMapping("/updateInfo")
-    public User updateUserInfo(User user,Model model){
-        model.addAttribute("user",user);
+    public User updateUserInfo(int userId,String userName,String img){
+        User user = new User(userId, userName, null, null, null, null, img);
+        userMapper.updateUser(user);
         return user;
     }
 
@@ -76,7 +79,7 @@ public class UserController {
     public boolean updatePassword(@PathVariable("userId") int userId,Model model,String oldPassword,String newPassword,HttpSession session){
         String password = userMapper.getUserById(userId).getUserPassword();
         if (oldPassword.equals(password)){
-            userMapper.updateUser(new User(userId,null,newPassword,null,null,null));
+            userMapper.updateUser(new User(userId,null,newPassword,null,null,null,null));
             return true;
         }else {
             model.addAttribute("msg","旧密码错误，请确认密码正确");
@@ -105,18 +108,31 @@ public class UserController {
         }
     }
 
+//    @ResponseBody
+//    @RequestMapping(value = "/banUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+//    public int banUser(@RequestBody JSONObject jsonParam,HttpSession session){
+//        User now_user= (User) session.getAttribute("user");
+//        int level = now_user.getUserLevel();
+//        if(level<3)//3等级以上的人才能BAN用户
+//        return -1;
+//        int userid=0;
+//        int res=0;
+//
+//        userid=jsonParam.getInteger("userId");
+//        //res = userMapper.banUser(userid);
+//
+//        return res;
+//    }
+
+    //本方法用来封禁一个用户请传入用户Id和解封时间,0代表封禁失败
     @ResponseBody
-    @RequestMapping(value = "/banUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public int banUser(@RequestBody JSONObject jsonParam,HttpSession session){
+    @RequestMapping()
+    public int banUser(int userId,Date outTime,HttpSession session){
         User now_user= (User) session.getAttribute("user");
-        int level = now_user.getUserLevel();
-        if(level<3)//3等级以上的人才能BAN用户
-        return -1;
-        int userid=0;
-        int res=0;
-        userid=jsonParam.getInteger("userId");//获取被ban人的id
-        res = userMapper.banUser(userid);//ban
-        return res;
+        Integer userLevel = now_user.getUserLevel();
+        if (userLevel<3)//3等级以上的人才能BAN用户
+            return -1;
+        return userMapper.banUser(userId,outTime);
     }
 
 }

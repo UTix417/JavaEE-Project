@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>游客页面</title>
+  <!-- 新 Bootstrap 核心 CSS 文件 -->
+  <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+  <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <div class="jumbotron" style="background-color:#66CCFF">
+      <h1 style="color:white;font-family: '楷体',serif">欢迎来到上大论坛</h1>
+  </div>
+    <button class="btn btn-default navbar-btn" onclick="window.location.href='Login.html'">登录</button>
+    <button class="btn btn-default navbar-btn" onclick="window.location.href='register.html'">注册</button>
+  <div class="blocklist">
+
+  </div>
+
+</div>
+<script>
+  $.get("/getAllBlocks2","json",function (blocks){
+    var pic=new Array();
+    pic[0]="<span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
+    pic[1]="<span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
+    pic[2]="<span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
+    pic[3]="<span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
+    pic[4]="<span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
+        for(let i = 0; i < blocks.length; i++)
+        {
+            let name = blocks[i].blockName;
+            $(".blocklist").append('<div onclick="window.location.href=\'login.html\'" data-id="' + name + '">' + pic[i] + '<u>' + name + '</u></div>');
+        }
+    })
+</script>
+</body>
+
+</html>

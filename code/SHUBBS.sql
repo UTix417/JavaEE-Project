@@ -16,6 +16,20 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`shubbs` /*!40100 DEFAULT CHARACTER SET 
 
 USE `shubbs`;
 
+/*Table structure for table `ban` */
+
+DROP TABLE IF EXISTS `ban`;
+
+CREATE TABLE `ban` (
+  `user_id` int NOT NULL,
+  `out_time` date NOT NULL,
+  PRIMARY KEY (`user_id`,`out_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `ban` */
+
+insert  into `ban`(`user_id`,`out_time`) values (1,'2021-05-18'),(2,'2021-05-18'),(4,'2021-05-29');
+
 /*Table structure for table `block` */
 
 DROP TABLE IF EXISTS `block`;
@@ -30,7 +44,7 @@ CREATE TABLE `block` (
 
 /*Data for the table `block` */
 
-insert  into `block`(`block_id`,`block_name`,`block_level`,`block_number`) values (1,'修改后的板块2',10,1),(2,'板块2',2,0),(3,'板块3',1,1);
+insert  into `block`(`block_id`,`block_name`,`block_level`,`block_number`) values (1,'修改后的板块2',2,1),(2,'板块2',2,0),(3,'板块3',1,1);
 
 /*Table structure for table `invitecode` */
 
@@ -93,7 +107,7 @@ CREATE TABLE `page` (
 
 /*Data for the table `page` */
 
-insert  into `page`(`text_id`,`page_floor`,`page_content`,`user_id`,`page_retime`) values (1,1,'红火火恍恍惚惚',1,'2021-04-28'),(1,2,'woc nb',1,'2021-05-20'),(1,3,'ffffff',4,'2021-05-19');
+insert  into `page`(`text_id`,`page_floor`,`page_content`,`user_id`,`page_retime`) values (1,1,'红火火恍恍惚惚',1,'2021-04-28'),(1,2,'woc nb',1,'2021-05-20'),(1,3,'ffffff',4,'2021-05-19'),(2,1,'一给我里giaogiao',1,'2021-05-19');
 
 /*Table structure for table `text` */
 
@@ -128,12 +142,43 @@ CREATE TABLE `user` (
   `user_level` int NOT NULL,
   `user_create_time` date NOT NULL,
   `user_image_path` char(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `user_state` int NOT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `user` */
 
-insert  into `user`(`user_id`,`user_name`,`user_password`,`user_level`,`user_create_time`,`user_image_path`) values (1,'朱威','654321',0,'2021-05-12','pppp'),(2,'2号','123456',0,'2021-05-12','pppp'),(4,'111','654321',0,'2021-05-12','pppp');
+insert  into `user`(`user_id`,`user_name`,`user_password`,`user_level`,`user_create_time`,`user_image_path`,`user_state`) values (1,'111','654321',2,'2021-05-12','kkk',0),(2,'111','654321',1,'2021-05-12','kkk',0),(4,'111','654321',0,'2021-05-12','kkk',1),(5,'111','654321',0,'2021-05-16','kkk',0),(6,'user5','654321',0,'2021-05-16','path',0),(7,'user4','654321',0,'2021-05-16','path',0),(8,'user4','654321',0,'2021-05-19','path',0),(9,'newuser','123456',0,'2021-05-27','path',0);
+
+/*!50106 set global event_scheduler = 1*/;
+
+/* Event structure for event `auto_release_user` */
+
+/*!50106 DROP EVENT IF EXISTS `auto_release_user`*/;
+
+DELIMITER $$
+
+/*!50106 CREATE DEFINER=`root`@`localhost` EVENT `auto_release_user` ON SCHEDULE EVERY 1 DAY STARTS '2021-05-27 18:47:49' ON COMPLETION NOT PRESERVE ENABLE DO BEGIN
+	    update user set user_state = 0 WHERE user.`user_id` IN 
+	    (
+		SELECT ban.`user_id` FROM ban GROUP BY ban.`user_id` HAVING MAX(ban.`out_time`) < (SELECT NOW())
+		
+	    );
+	END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `banuser` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `banuser` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `banuser`(IN userId INTEGER,in outTime Date)
+BEGIN
+	insert into ban(user_id,out_time) values(userId,outTime);
+	update user set user.`user_state` = 1 where user.`user_id` = userId;
+    END */$$
+DELIMITER ;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

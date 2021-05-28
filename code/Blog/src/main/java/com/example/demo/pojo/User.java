@@ -1,3 +1,4 @@
+
 package com.example.demo.pojo;
 
 import lombok.*;
@@ -18,6 +19,8 @@ public class User {
     private String userName;
     private String userPassword;
     private Integer userLevel;
+    private Integer userState;
     private Date userCreateTime;
     private String userImagePath;
+
 }
