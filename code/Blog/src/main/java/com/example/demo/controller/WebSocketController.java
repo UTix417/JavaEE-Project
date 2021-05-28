@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@ServerEndpoint("/Message")
+@ServerEndpoint("/WebSocket")
 @Component
 @Slf4j
 public class WebSocketController {
@@ -44,6 +44,7 @@ public class WebSocketController {
     public void onMessage(String dataStr,Session session){
         JSONObject data = JSON.parseObject(dataStr);
         String type=data.getString("type");
+        System.out.println(dataStr);
         if(!StringUtils.isEmpty(type) && "heartbeat".equals(type)){
             List<Message> messages=messageMapper.getAllMessageByUserId(data.getInteger("fromId"),data.getInteger("toId"));
             messages.addAll(messageMapper.getAllMessageByUserId(data.getInteger("toId"),data.getInteger("fromId")));
