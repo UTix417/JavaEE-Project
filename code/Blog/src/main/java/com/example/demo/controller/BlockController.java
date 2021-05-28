@@ -87,6 +87,11 @@ public class BlockController {
         System.out.println(111);
         return "main";
     }
-
+    
+    @RequestMapping("/blockadd")
+    public String blockadd(@RequestParam(value = "block_id") Integer id,@RequestParam(value = "block_name") String name,@RequestParam(value = "block_level") Integer level) {
+        blockMapper.addBlock(id, name, level, 0);
+        return "main";
+        }
 
 }
