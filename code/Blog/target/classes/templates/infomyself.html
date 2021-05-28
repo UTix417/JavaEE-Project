@@ -32,13 +32,13 @@
                         <div class="input-group mb-3 input-group-lg">
                             <input class="form-control" name="" type="text" id="div1" style="display:none" />
                         </div>
-
                         <input  id="namebtn" type="button" class="btn btn-default btn-sm" onclick="changename()" value="更改昵称"></input>
 
                     </div>
                 </h1>
 
                 <h4>
+                    <span id ='banning' class="label label-danger">禁言中</span>
                     <span id ='member' class="label label-primary">高级用户</span>
                     <span id ='admin' class="label label-warning">管理员</span>
                 </h4>
@@ -53,10 +53,15 @@
                         <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3" id="birthday"></div>
                         <div class="col"></div>
                     </div>
-                    <div class="text-right">
-                        <a href="#ckey" class="btn btn-inverse btn-sm" data-toggle="collapse">密码修改</a>
-                    </div>
+                </h3>
+                    <div class="text-right panel-group" id="accordion1">
 
+                        <a href="#ckey" class="btn btn-inverse btn-sm" data-parent="#accordion1" data-toggle="collapse" id="colkey">密码修改</a>
+                        <a href="#invite" class="btn btn-inverse btn-sm" data-parent="#accordion1" data-toggle="collapse" id="colinvite">邀请用户</a>
+                        <a href="#invited" class="btn btn-inverse btn-sm" data-parent="#accordion1" data-toggle="collapse" id="colinvited">升级用户</a>
+
+                    </div>
+                <h4>
                         <div id="ckey" class="collapse">
 
                             <span>旧密码：</span>
@@ -70,7 +75,24 @@
 
                         </div>
 
-                </h3>
+
+                        <div id="invite" class="collapse">
+
+                            <span>邀请代码:</span>
+                            <textarea id="invite_code"  rows="4" required style="width: 100%;"></textarea>
+                            <button type="button" id="get_invite_btn" class="btn btn-success">生成邀请码</button>
+                        </div>
+                        <div id="invited" class="collapse">
+
+                            <span>邀请代码:</span>
+                            <textarea id="invited_code"  rows="4" required style="width: 100%;"></textarea>
+                            <button type="button" id="be_invited_btn" class="btn btn-success">升级用户</button>
+                        </div>
+                </h4>
+
+
+
+
             </div>
 
         </div>
@@ -82,38 +104,63 @@
         var userid=0;
         var userCreateTime="xxxx-yy-zz";
         var userImagePath="../img/捕获.png";
-        var nowuser;
-        $.get("/getMyInfo", "json", function(user){
-            nowuser=user;
-        username=nowuser.username;
-        userid=nowuser.userId;
-        levelf=nowuser.userLevel;
-        userCreateTime=nowuser.userCreateTime;
-        userImagePath=nowuser.userImagePath;
-        });
+        var key;
 
+        $("#banning").css("display", "none");
         $("#member").css("display", "none");
         $("#admin").css("display", "none");
+        $("#colinvite").css("display", "none");
+        //禁言，高级用户，管理员标签；邀请用户功能默认不显示
 
-        if(levelf==1) {
-            $("#member").css("display", "");
-        }else if(levelf==2)
-        {
-            $("#admin").css("display", "");
-        }
+
         //nowuser.username=username;
         document.getElementById("username").innerHTML = username;
         document.getElementById("myid").innerHTML = userid;
         document.getElementById("birthday").innerHTML = userCreateTime;
         document.getElementById("pic").src=userImagePath;
+        //获取基本信息
+        $.get("/user/getMyInfo",null,function(user){
+            console.log("begin");
+            console.log(user.userName);
+            console.log(user);
+            //nowuser=user;
+            username=user.userName;
+            console.log(username);
+            userid=user.userId;
+            levelf=user.userLevel;
+            userCreateTime=user.userCreateTime;
+            userImagePath=user.userImagePath;
+            //渲染
+            document.getElementById("username").innerHTML = username;
+            document.getElementById("myid").innerHTML = userid;
+            document.getElementById("birthday").innerHTML = userCreateTime.substring(0,10);
+            document.getElementById("pic").src=userImagePath;
+            //根据用户等级显示标签和功能
+            if(levelf==0)
+            {
+                $("#banning").css("display", "");
+            }
+            if(levelf==2) {
+                $("#member").css("display", "");
+            }
+            if(levelf==5)
+            {
+                $("#admin").css("display", "");
+            }
+            if(levelf>=2){
+                $("#colinvite").css("display", "");
+            }
 
-        function changename()
+        });
+
+        function changename()//改昵称
         {
 
             let thisbtn=document.getElementById("namebtn")
             //thisbtn.value="确定";
             if(thisbtn.value=="更改昵称")
             {
+                //显示输入框，隐去label，更改按钮
                 $("#username").css("display", "none");
                 document.getElementById("div1").value=username;
                 document.getElementById("div1").style.display="";
@@ -121,23 +168,34 @@
                  thisbtn.class="btn btn-success";
             }else
             {
-                //thisbtn.value="更改昵称";
+                //改昵称中
                 username=document.getElementById("div1").value;
-                //$("#username").css("display", "");
-                nowuser.username=username;//加上这句话就后面就运行不出来了
-                //document.getElementById("div1").style.display="none";
+                // var user={
+                //     "userId" :userid,
+                //     "userName" : username,
+                //     "userImagePath" :null
+                // };//更改信息
+                console.log(user);
+                //调用方法
                 $.ajax({
                     type:"POST",
-                    url:"/updateInfo",
-                    data:"user="+nowuser,
-                    contentType:"application/json;charset=UTF-8",
+                    url:"/user/updateInfo",
+                    dataType : "JSON",
+                    data:{
+                        "userId" :userid,
+                        "userName" : username,
+                        "userImagePath" :null
+                    },
+                    contentType:"application/json",
                     success: function (result) {//result:响应的数据
                         alert('更改成功'); // 请求成功时的回调函数
-                        //document.getElementById("username").innerHTML = nowuser.username;
+                        //改回样式
+                        document.getElementById("username").innerHTML = username;
                         $("#username").css("display", "");
                         document.getElementById("div1").style.display="none";
                         thisbtn.value="更改昵称";
                         thisbtn.class="btn btn-default btn-xs";
+
                     },
                     error: function () {
                         alert('更改失败'); // 请求失败时的回调函数
@@ -151,11 +209,12 @@
 
             }
         }
+        //更改密码
         $('#keybtn').click(function () {
             var newkey = $("#newkey").val();
             var oldkey = $("#oldkey").val();
             $.ajax({
-                url: "/updatePassword/"+userid,
+                url: "/user/updatePassword/"+userid,
                 type: "post",
                 dataType: "json",
                 data : {
@@ -163,19 +222,52 @@
                     "newPassword": newkey
                 },
                 success: function (data) {
-                    if(data==true)
+                    if(data==true) {
                         //这里的路径是相对于js的路径
-                        alert("更改成功")
+                        alert("更改成功");
+                        document.getElementById("colkey").click();
+                        //成功后自动折叠
+                    }
                     else
                         alert("旧密码错误或未登录")
                 },
-                error: function (e) {
+                error: function (data) {
                     console.log("faild")
                     alert("连接丢失")
                 }
             })
         });
-
+        //获得邀请码按钮
+        $('#get_invite_btn').click(function (){
+            $.get("/user/inviteCode",null,function(data){
+                document.getElementById("invite_code").value=data;
+            });
+        });
+        //升级功能按钮
+        $('#be_invited_btn').click(function (){
+            $.ajax({
+                url: "/user/inviteUpLevel",
+                type: "post",
+                dataType: "json",
+                data : {
+                    "inviteCode": document.getElementById("invited_code").value,
+                },
+                success: function (data) {
+                    if(data=="使用成功") {
+                        //这里的路径是相对于js的路径
+                        alert("升级成功");
+                        document.getElementById("colinvited").click();
+                        //成功后自动折叠
+                    }
+                    else
+                        alert("邀请码错误或者您已经是会员用户")
+                },
+                error: function (data) {
+                    console.log("faild")
+                    alert("升级失败")
+                }
+            })
+        });
     </script>
 </div>
 

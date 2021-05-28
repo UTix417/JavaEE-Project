@@ -15,17 +15,18 @@ import java.util.List;
  * @author 朱威
  * @create 2021-05-19-9:57
  */
-//@Configuration
-//public class MyMVCConfig implements WebMvcConfigurer {
-//
-//    @Override
-//    public void addViewControllers(ViewControllerRegistry registry) {
-//        registry.addViewController("/index.html").setViewName("index");
-//        registry.addViewController("/").setViewName("index");
-//    }
-//
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/**").excludePathPatterns("/index.html","/login","/","/img/**","/webjars/**");
-//    }
-//}
+@Configuration
+public class MyMVCConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/index.html").setViewName("index");
+        registry.addViewController("/").setViewName("Login");
+        registry.addViewController("/Login.html").setViewName("Login");
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/**").excludePathPatterns("Login.html","/index.html","/login","/","/img/**","/webjars/**");
+    }
+}

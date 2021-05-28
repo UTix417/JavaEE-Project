@@ -34,7 +34,7 @@ public class LoginController {
         if(user != null)
         {
             session.setAttribute("user",user);
-            return "redirect:/user/getAllBlock";
+            return "main";
         }
         else
         {
