@@ -13,9 +13,9 @@
 <body>
 <div class="container">
   <div class="jumbotron" style="background-color:#66CCFF">
-      <h1 style="color:white;font-family: '楷体'">欢迎来到上大论坛</h1>
+      <h1 style="color:white;font-family: '楷体',serif">欢迎来到上大论坛</h1>
   </div>
-    <button class="btn btn-default navbar-btn" onclick="window.location.href='login.html'">登录</button>
+    <button class="btn btn-default navbar-btn" onclick="window.location.href='Login.html'">登录</button>
     <button class="btn btn-default navbar-btn" onclick="window.location.href='register.html'">注册</button>
   <div class="blocklist">
 
@@ -33,7 +33,7 @@
         for(let i = 0; i < blocks.length; i++)
         {
             let name = blocks[i].blockName;
-            $(".blocklist").append('<div onclick="window.location.href=\'index.html\'" data-id="' + name + '">' + pic[i] + '<u>' + name + '</u></div>');
+            $(".blocklist").append('<div onclick="window.location.href=\'login.html\'" data-id="' + name + '">' + pic[i] + '<u>' + name + '</u></div>');
         }
     })
 </script>
