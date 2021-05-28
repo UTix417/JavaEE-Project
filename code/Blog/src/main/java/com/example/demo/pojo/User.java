@@ -23,6 +23,4 @@ public class User {
     private Date userCreateTime;
     private String userImagePath;
 
-    public User(String userId, String userName, Object userPassword, Object userLevel, Object userState, Object userCreateTime, String img) {
-    }
 }
