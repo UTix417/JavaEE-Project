@@ -21,6 +21,13 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="C:\Program Files\JetBrains\IntelliJ IDEA 2020.2.2\plugins\maven\lib\maven3" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
   <component name="ProjectId" id="1t3StLZjzPUi1IEOLz1Hgc6C5t0" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -54,7 +61,36 @@
       <command value="mvn install" />
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.BlogApplicationTests.contextLoads">
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BlogApplicationTests.contextLoads" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="demo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.demo.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.demo" />
+      <option name="MAIN_CLASS_NAME" value="com.example.demo.BlogApplicationTests" />
+      <option name="METHOD_NAME" value="contextLoads" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="BlogApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="demo" />
       <extension name="coverage">
@@ -70,6 +106,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.BlogApplicationTests.contextLoads" />
         <item itemvalue="Spring Boot.BlogApplication" />
       </list>
     </recent_temporary>
@@ -84,7 +121,10 @@
       <updated>1621996495714</updated>
       <workItem from="1621996500502" duration="4537000" />
       <workItem from="1622114543327" duration="368000" />
-      <workItem from="1622196788819" duration="2393000" />
+      <workItem from="1622196788819" duration="3703000" />
+      <workItem from="1622205545941" duration="28000" />
+      <workItem from="1622209801854" duration="2456000" />
+      <workItem from="1622216100579" duration="1717000" />
     </task>
     <task id="LOCAL-00001" summary="addblock 添加等级限制">
       <created>1621998034456</created>
@@ -116,38 +156,38 @@
     <option name="LAST_COMMIT_MESSAGE" value="addblock 添加等级限制" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1877" height="293" key="GridCell.Tab.0.bottom" timestamp="1622199061576">
+    <state width="1877" height="545" key="GridCell.Tab.0.bottom" timestamp="1622217498077">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="293" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1622199061576" />
-    <state width="1877" height="293" key="GridCell.Tab.0.center" timestamp="1622199061575">
+    <state width="1877" height="545" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1622217498077" />
+    <state width="1877" height="545" key="GridCell.Tab.0.center" timestamp="1622217498077">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="293" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1622199061575" />
-    <state width="1877" height="293" key="GridCell.Tab.0.left" timestamp="1622199061575">
+    <state width="1877" height="545" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1622217498077" />
+    <state width="1877" height="545" key="GridCell.Tab.0.left" timestamp="1622217498077">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="293" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1622199061575" />
-    <state width="1877" height="293" key="GridCell.Tab.0.right" timestamp="1622199061575">
+    <state width="1877" height="545" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1622217498077" />
+    <state width="1877" height="545" key="GridCell.Tab.0.right" timestamp="1622217498077">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="293" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1622199061575" />
-    <state width="1877" height="293" key="GridCell.Tab.1.bottom" timestamp="1622199061576">
+    <state width="1877" height="545" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1622217498077" />
+    <state width="1877" height="2" key="GridCell.Tab.1.bottom" timestamp="1622213837928">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="293" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1622199061576" />
-    <state width="1877" height="293" key="GridCell.Tab.1.center" timestamp="1622199061576">
+    <state width="1877" height="2" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1622213837928" />
+    <state width="1877" height="2" key="GridCell.Tab.1.center" timestamp="1622213837928">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="293" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1622199061576" />
-    <state width="1877" height="293" key="GridCell.Tab.1.left" timestamp="1622199061576">
+    <state width="1877" height="2" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1622213837928" />
+    <state width="1877" height="2" key="GridCell.Tab.1.left" timestamp="1622213837928">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="293" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1622199061576" />
-    <state width="1877" height="293" key="GridCell.Tab.1.right" timestamp="1622199061576">
+    <state width="1877" height="2" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1622213837928" />
+    <state width="1877" height="2" key="GridCell.Tab.1.right" timestamp="1622213837928">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="293" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1622199061576" />
+    <state width="1877" height="2" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1622213837928" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -161,6 +201,11 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/example/demo/config/LoginHandlerInterceptor.java</url>
           <line>17</line>
           <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/example/demo/BlogApplicationTests.java</url>
+          <line>39</line>
+          <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

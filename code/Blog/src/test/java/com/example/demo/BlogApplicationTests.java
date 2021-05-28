@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
+import java.util.List;
 
 @SpringBootTest
 class BlogApplicationTests {
@@ -34,7 +35,12 @@ class BlogApplicationTests {
         Page page = new Page(1, 5, new Date(System.currentTimeMillis()), "我是第五", new User(4, null, null,null, null, null, null));
         Message message = new Message(null, user1, user2, new Date(System.currentTimeMillis()), "你好");
         InviteCode inviteCode = new InviteCode(null,"ASDFGHJ",null,1,2,new Date(System.currentTimeMillis()));
-        System.out.println(userMapper.banUser(4,new Date(System.currentTimeMillis())));
+        List<Text> text1 = textMapper.getTextsByBlockId(1,1);
+        List<Text> text2 = textMapper.getTextsByBlockId(1,2);
+        System.out.println(text2);
+        text2.addAll(text1);
+        System.out.println(text2);
+//        System.out.println(userMapper.getUserById(1));
 //        userMapper.updateUser(user);
 //        System.out.println(blockMapper.getAllBlocks());
 //        System.out.println(blockMapper.getBlockById(1));
