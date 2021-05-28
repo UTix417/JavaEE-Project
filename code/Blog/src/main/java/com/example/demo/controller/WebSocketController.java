@@ -32,11 +32,25 @@ public class WebSocketController {
     @Resource
     UserMapper userMapper;
     @OnOpen
-    public void onOpen() {}
+    public void onOpen(Session session) {
+        log.info("onOpen前存活: ");
+        Map<String, List<String>> requestParameterMap = session.getRequestParameterMap();
+        String userId = requestParameterMap.get("fromId").get(0);
+        log.info("用户上线了, userId为:{}, sessionId为:{}", userId, session.getId());
+        //将新用户存入在线的组
+    }
     @OnClose
-    public void onClose() {}
+    public void onClose(Session session) {
+        log.info("onClose前存活:");
+        Map<String, List<String>> requestParameterMap = session.getRequestParameterMap();
+        String userId = requestParameterMap.get("fromId").get(0);
+        log.info("有用户断开了, userId为:{}, sessionId为:{}", userId, session.getId());
+        //将掉线的用户移除在线的组里
+    }
     @OnError
-    public void onError(Throwable throwable) {}
+    public void onError(Throwable throwable) {
+        log.error("onError: {}", throwable.getMessage());
+    }
     /**
      * 收到客户端发来消息
      */
