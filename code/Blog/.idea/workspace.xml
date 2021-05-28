@@ -4,7 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="731c3f33-74c5-468c-884b-12a24be37d16" name="默认变更列表" comment="增加权限检测" />
+    <list default="true" id="731c3f33-74c5-468c-884b-12a24be37d16" name="默认变更列表" comment="addblock 添加等级限制">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/BlockController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/BlockController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/PageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/controller/PageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/mapper/PageMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demo/mapper/PageMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mybatis/mapper/PageMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mybatis/mapper/PageMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/demo/controller/BlockController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/demo/controller/BlockController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/demo/controller/PageController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/demo/controller/PageController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/demo/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/demo/controller/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/demo/mapper/PageMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/demo/mapper/PageMapper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mybatis/mapper/PageMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mybatis/mapper/PageMapper.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -75,6 +86,16 @@
       <option name="presentableId" value="Default" />
       <updated>1621996495714</updated>
       <workItem from="1621996500502" duration="4537000" />
+      <workItem from="1622015029059" duration="713000" />
+      <workItem from="1622077216140" duration="298000" />
+      <workItem from="1622077559604" duration="497000" />
+      <workItem from="1622181549163" duration="242000" />
+      <workItem from="1622186969019" duration="21000" />
+      <workItem from="1622205294179" duration="551000" />
+      <workItem from="1622207720753" duration="957000" />
+      <workItem from="1622211798821" duration="605000" />
+      <workItem from="1622214163415" duration="989000" />
+      <workItem from="1622215360356" duration="3077000" />
     </task>
     <task id="LOCAL-00001" summary="addblock 添加等级限制">
       <created>1621998034456</created>
@@ -88,6 +109,16 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
