@@ -10,8 +10,9 @@
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style>
-        #blocklist{
-
+        div.block{
+            border-style:outset;
+            height:70px;
         }
     </style>
 </head>
@@ -20,9 +21,11 @@
     <div class="jumbotron" style="background-color:#66CCFF">
         <h1 style="color:white;font-family: '楷体',serif">欢迎来到上大论坛</h1>
     </div>
+    <div >
     <p class="navbar-text">欢迎你，用户</p>
     <button class="btn btn-default navbar-btn" onclick="jmp1()">个人页面</button>
     <button class="btn btn-default navbar-btn"  id="blockadd" onclick="add_block()" style="display:none">添加分区</button>
+    </div>
     <form method="post" action="blockadd">
     <div class="block_con" id="block_con" style="display: none">
         <p>板块名字:</p>
@@ -54,15 +57,16 @@
     $.get("/getAllBlocks2","json",function(blocks){
         var pic=new Array();
         num=blocks.length;
-        pic[0]="<span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
-        pic[1]="<span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
-        pic[2]="<span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
-        pic[3]="<span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
-        pic[4]="<span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
+        pic[0]="<span class=\"glyphicon glyphicon-book\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
+        pic[1]="<span class=\"glyphicon glyphicon-briefcase\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
+        pic[2]="<span class=\"glyphicon glyphicon-cloud\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
+        pic[3]="<span class=\"glyphicon glyphicon-dashboard\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
+        pic[4]="<span class=\"glyphicon glyphicon-file\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
         for(let i = 0; i < num; i++)
         {
             let name = blocks[i].blockName;
-            $(".blocklist").append('<div onclick="jmp2()" data-id="' + name + '">' + pic[i] + '<u>' + name + '</u></div>');
+            let j=i%5;
+            $(".blocklist").append('<div class="block" onclick="jmp2()" data-id="' + name + '">' + pic[j] + '<u>' + name + '</u></div><br>');
         }
         var num2=num+1;
         $(".block_con").append('<input id="'+num2+'" value="'+num2+'" name="block_id" style="display: none">')
