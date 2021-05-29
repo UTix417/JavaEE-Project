@@ -68,20 +68,20 @@ public class BlockController {
 
 
 //    获取对应板块的信息
-    @ResponseBody
-    @GetMapping("/getBlockById/{id}")
-    public String getBlockById(@PathVariable("id") int blockId, HttpSession session, Model model){
-        /*
-        edit by 李肖帆
-        */
-        session.setAttribute("blockid",blockId);
-        Block block=blockMapper.getBlockById(blockId);
-        model.addAttribute("block",block);
-        return "oneBlock";
-    }
+//     @ResponseBody
+//     @GetMapping("/getBlockById/{id}")
+//     public String getBlockById(@PathVariable("id") int blockId, HttpSession session, Model model){
+//         /*
+//         edit by 李肖帆
+//         */
+//         session.setAttribute("blockid",blockId);
+//         Block block=blockMapper.getBlockById(blockId);
+//         model.addAttribute("block",block);
+//         return "oneBlock";
+//     }
     
      @ResponseBody
-    @GetMapping("/getblock/{id}")
+    @GetMapping("/getBlockById/{id}")
     public Block getBlockById(@PathVariable("id") int blockId, HttpSession session, Model model){
         session.setAttribute("blockid",blockId);
         return blockMapper.getBlockById(blockId);
