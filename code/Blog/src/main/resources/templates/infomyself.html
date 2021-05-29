@@ -112,7 +112,7 @@
         var userCreateTime="xxxx-yy-zz";
         var userImagePath="../img/捕获.png";
         var key;
-
+    
         $("#banning").css("display", "none");
         $("#member").css("display", "none");
         $("#admin").css("display", "none");
@@ -161,7 +161,17 @@
             }
 
         });
-
+        //返回主页
+        function back_to_main()
+        {
+            location.href = "main.html";
+        }
+        //私信跳转
+        function messaging()
+        {
+            sessionStorage.setItem("userId", userid);
+            location.href = "Message.html";
+        }
         function changename()//改昵称
         {
 
