@@ -20,4 +20,5 @@ public class User {
     private Integer userLevel;
     private Date userCreateTime;
     private String userImagePath;
+    private Integer userState;
 }

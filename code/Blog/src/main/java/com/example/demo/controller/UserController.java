@@ -76,7 +76,7 @@ public class UserController {
     public boolean updatePassword(@PathVariable("userId") int userId,Model model,String oldPassword,String newPassword,HttpSession session){
         String password = userMapper.getUserById(userId).getUserPassword();
         if (oldPassword.equals(password)){
-            userMapper.updateUser(new User(userId,null,newPassword,null,null,null));
+            userMapper.updateUser(new User(userId,null,newPassword,null,null,null,null));
             return true;
         }else {
             model.addAttribute("msg","旧密码错误，请确认密码正确");
@@ -116,6 +116,20 @@ public class UserController {
         int res=0;
         userid=jsonParam.getInteger("userId");//获取被ban人的id
         res = userMapper.banUser(userid);//ban
+        return res;
+    }
+
+    //解封用户
+    @ResponseBody
+    @RequestMapping(value = "/recoverUser/{id}")
+    public int recoverUser(@PathVariable("id") int userId,HttpSession session){
+        User now_user= (User) session.getAttribute("user");
+        int level = now_user.getUserLevel();
+        if(level<3)//3等级以上的人才能BAN用户
+            return -1;
+        int res=0;
+        userMapper.recoverUser(userId);
+        res = userMapper.banUser(userId);//ban
         return res;
     }
 

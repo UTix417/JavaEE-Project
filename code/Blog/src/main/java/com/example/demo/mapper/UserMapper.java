@@ -21,5 +21,9 @@ public interface UserMapper {
     //更新用户信息,不要更新ID与注册时间，用户id不是null且不能修改
     public  int updateUser(User user);
 
+    //禁言用户
     public int banUser(int userId);
+
+    //解封用户
+    public int recoverUser(int userId);
 }

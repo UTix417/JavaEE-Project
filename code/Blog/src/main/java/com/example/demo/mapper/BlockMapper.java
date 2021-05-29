@@ -24,5 +24,5 @@ public interface BlockMapper {
     //根据访问等级获取板块
     public List<Block> getBlockByLevel(int level);
 
-    public int addBlock(int block_id,String block_name,int block_level,int block_number);
+    public int addBlock(int block_id,String block_name,int block_level);
 }
