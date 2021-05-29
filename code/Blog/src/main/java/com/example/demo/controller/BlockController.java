@@ -81,8 +81,8 @@ public class BlockController {
     }
     
      @ResponseBody
-    @GetMapping("/getblockbyid/{id}")
-    public String getBlockById(@PathVariable("id") int blockId, HttpSession session, Model model){
+    @GetMapping("/getblock/{id}")
+    public Block getBlockById(@PathVariable("id") int blockId, HttpSession session, Model model){
         session.setAttribute("blockid",blockId);
         return blockMapper.getBlockById(blockId);
     }
