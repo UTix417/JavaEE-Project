@@ -79,7 +79,13 @@ public class BlockController {
         model.addAttribute("block",block);
         return "oneBlock";
     }
-
+    
+     @ResponseBody
+    @GetMapping("/getblockbyid/{id}")
+    public String getBlockById(@PathVariable("id") int blockId, HttpSession session, Model model){
+        session.setAttribute("blockid",blockId);
+        return blockMapper.getBlockById(blockId);
+    }
 
     @RequestMapping("blockAdd")
     public String blockadd(@RequestParam(value = "block_id") Integer id,@RequestParam(value = "block_name") String name,@RequestParam(value = "level") Integer level,
