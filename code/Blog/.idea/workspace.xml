@@ -62,19 +62,6 @@
     </option>
   </component>
   <component name="RunManager" selected="JUnit.BlogApplicationTests.contextLoads">
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="BlogApplicationTests.contextLoads" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="demo" />
       <extension name="coverage">
@@ -124,7 +111,8 @@
       <workItem from="1622196788819" duration="3703000" />
       <workItem from="1622205545941" duration="28000" />
       <workItem from="1622209801854" duration="2456000" />
-      <workItem from="1622216100579" duration="1717000" />
+      <workItem from="1622216100579" duration="1935000" />
+      <workItem from="1622218083594" duration="7000" />
     </task>
     <task id="LOCAL-00001" summary="addblock 添加等级限制">
       <created>1621998034456</created>
@@ -156,22 +144,22 @@
     <option name="LAST_COMMIT_MESSAGE" value="addblock 添加等级限制" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1877" height="545" key="GridCell.Tab.0.bottom" timestamp="1622217498077">
+    <state width="1877" height="36" key="GridCell.Tab.0.bottom" timestamp="1622218057923">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="545" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1622217498077" />
-    <state width="1877" height="545" key="GridCell.Tab.0.center" timestamp="1622217498077">
+    <state width="1877" height="36" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1622218057923" />
+    <state width="1877" height="36" key="GridCell.Tab.0.center" timestamp="1622218057908">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="545" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1622217498077" />
-    <state width="1877" height="545" key="GridCell.Tab.0.left" timestamp="1622217498077">
+    <state width="1877" height="36" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1622218057908" />
+    <state width="1877" height="36" key="GridCell.Tab.0.left" timestamp="1622218057908">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="545" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1622217498077" />
-    <state width="1877" height="545" key="GridCell.Tab.0.right" timestamp="1622217498077">
+    <state width="1877" height="36" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1622218057908" />
+    <state width="1877" height="36" key="GridCell.Tab.0.right" timestamp="1622218057923">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="545" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1622217498077" />
+    <state width="1877" height="36" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1622218057923" />
     <state width="1877" height="2" key="GridCell.Tab.1.bottom" timestamp="1622213837928">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
