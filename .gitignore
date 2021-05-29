@@ -1,3 +1,5 @@
 
 *.class
 code/Blog/.idea/workspace.xml
+code/Blog/target/classes/mybatis/mapper/PageMapper.xml
+code/Blog/target/classes/mybatis/mapper/BlockMapper.xml
