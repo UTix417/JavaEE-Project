@@ -13,6 +13,13 @@
 <body>
 
 <div class="container">
+  <div class="text-right" >
+
+    <ul class="breadcrumb">
+      <li><a  class="btn btn-inverse btn-sm"  onclick="to_info()" style="font-size: 15px">个人中心</a></li>
+      <li><a  class="btn btn-inverse btn-sm"  onclick="back_to_main()" style="font-size: 15px">返回主页</a></li>
+    </ul>
+  </div>
   <div class="jumbotron">
     <h1 id="blockname"></h1>
     <div class="text-right">
@@ -61,7 +68,14 @@
   //   private Integer blockLevel;
   //   private Integer blockNumber;
   // }
-
+  function to_info()
+  {
+    location.href = "infomyself.html";
+  }
+  function back_to_main()
+  {
+    location.href = "main.html";
+  }
   function deletetext(textid) {
     console.log(textid);
     var res = confirm("确认封杀这个帖子吗？");
