@@ -30,6 +30,17 @@
 <div class="setPageDiv">
   <div class="Pagination" id="pagination"></div>
 </div>
+<div class="container text-center">
+  <br>
+  <br>
+  <br>
+  <p>上海大学论坛 </p>
+
+</div>
+
+
+
+
 <script >
   document.getElementById("blockname").innerHTML="hahaha";
   //alert("0000")
@@ -132,8 +143,10 @@
     }
   }
 
-  function jmp_to_text(textid) {
+  function jmp_to_text(textid,mytitle) {
     sessionStorage.setItem("textid", textid);
+    sessionStorage.setItem("texttitle", mytitle);
+    //sessionStorage.setItem("mytitle", "hahaha");
     location.href = "onetext.html";
   }
   function user_visit(userid)
@@ -177,7 +190,7 @@
     div_user.className = "col-lg-3 col-md-3 col-xs-3 col-sm-3";
     div_text.className = "col-lg-7 col-md-7 col-xs-7 col-sm-7";
     div_admin.className = "col-lg-2 col-md-2 col-xs-2 col-sm-2";
-    div_text.setAttribute("onclick", "jmp_to_text(" + textid + ")");
+    div_text.setAttribute("onclick", "jmp_to_text(" + textid + ",\""+texttitle+"\")");
     div_user.setAttribute("onclick", "user_visit(" + userid + ")");
 
     //pic.id="pic"+textid;
@@ -241,6 +254,9 @@
 
   }
   //alert("22222");
+  createtable(3,2,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+  createtable(3,1,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+  createtable(1,1,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
   createtable(3,2,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
   createtable(3,1,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
   createtable(1,1,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
