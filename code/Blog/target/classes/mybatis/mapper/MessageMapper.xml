@@ -14,7 +14,9 @@
     </select>
 
     <select id="getAllMessageByUserId" resultMap="message">
-        select * from message where message_user1 = #{senderId} and message_user2 = #{recipientId}
+        SELECT message_id,message_user1,message_user2,user1.`user_name` user_name1,user2.`user_name` user_name2,message.`message_send_time`,message.`message_content`
+        FROM message,USER user1,USER user2
+        WHERE  user1.`user_id` = message.`message_user1` AND user2.`user_id` = message.`message_user2` AND message.`message_user1` = #{senderId} AND message.`message_user2` = #{recipientId}
     </select>
 
     <insert id="addMessage">
@@ -26,20 +28,20 @@
         <result property="messageSendTime" column="message_send_time"></result>
         <result property="messageContent" column="message_content"></result>
         <association property="user1" javaType="com.example.demo.pojo.User">
-            <id property="userId" column="user_id"></id>
-            <result property="userName" column="user_name"></result>
-            <result property="userPassword" column="user_password"></result>
-            <result property="userLevel" column="user_level"></result>
-            <result property="userCreateTime" column="user_create_time"></result>
-            <result property="userImagePath" column="user_image_path"></result>
+            <id property="userId" column="message_user1"></id>
+            <result property="userName" column="user_name1"></result>
+            <result property="userPassword" column="user_password1"></result>
+            <result property="userLevel" column="user_level1"></result>
+            <result property="userCreateTime" column="user_create_time1"></result>
+            <result property="userImagePath" column="user_image_path1"></result>
         </association>
         <association property="user2" javaType="com.example.demo.pojo.User">
-            <id property="userId" column="user_id"></id>
-            <result property="userName" column="user_name"></result>
-            <result property="userPassword" column="user_password"></result>
-            <result property="userLevel" column="user_level"></result>
-            <result property="userCreateTime" column="user_create_time"></result>
-            <result property="userImagePath" column="user_image_path"></result>
+            <id property="userId" column="message_user2"></id>
+            <result property="userName" column="user_name2"></result>
+            <result property="userPassword" column="user_password2"></result>
+            <result property="userLevel" column="user_level2"></result>
+            <result property="userCreateTime" column="user_create_time2"></result>
+            <result property="userImagePath" column="user_image_path2"></result>
         </association>
     </resultMap>
 
