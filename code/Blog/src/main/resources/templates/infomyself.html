@@ -112,7 +112,7 @@
         $("#colinvite").css("display", "none");
         //禁言，高级用户，管理员标签；邀请用户功能默认不显示
 
-
+        //var myuser;
         //nowuser.username=username;
         document.getElementById("username").innerHTML = username;
         document.getElementById("myid").innerHTML = userid;
@@ -120,6 +120,8 @@
         document.getElementById("pic").src=userImagePath;
         //获取基本信息
         $.get("/user/getMyInfo",null,function(user){
+            //myuser=eval(user);
+
             console.log("begin");
             console.log(user.userName);
             console.log(user);
@@ -136,14 +138,14 @@
             document.getElementById("birthday").innerHTML = userCreateTime.substring(0,10);
             document.getElementById("pic").src=userImagePath;
             //根据用户等级显示标签和功能
-            if(levelf==0)
+            if(user.userState==1)
             {
                 $("#banning").css("display", "");
             }
             if(levelf==2) {
                 $("#member").css("display", "");
             }
-            if(levelf==5)
+            if(levelf==3)
             {
                 $("#admin").css("display", "");
             }
