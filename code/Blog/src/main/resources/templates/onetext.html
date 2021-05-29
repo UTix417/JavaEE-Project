@@ -3,12 +3,256 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <p id="1"></p>
+<div class="container">
+    <div class="jumbotron">
+        <h1 id="textname"></h1>
+    </div>
+</div>
+<div class="container ">
+    <div id="text" >
+        <!--正文部分-->
+    </div>
+
+</div>
+<div class="setPageDiv">
+    <div class="Pagination" id="pagination"></div>
+</div>
+
+<div class="container text-center">
+    <br>
+    <br>
+    <br>
+    <br>
+    <p>上海大学论坛 </p>
+
+</div>
+<footer class="navbar navbar-fixed-bottom ">
+
+    <div id="back" class="container jumbotron jumbotron-fluid" style="display: none">
+        <div id='replyother'class="row" >
+            <div class="col-lg-10 col-md-10 col-xs-10 col-sm-10">
+            <span>回复 </span><input id="replyfloor" type='text' style="width:30px" oninput="value=value.replace(/[^\d]/g,'')"></input><span> 楼:</span>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-lg-1 col-md-1 col-xs-1 col-sm-1">
+            <h4>回复：</h4>
+        </div>
+        <div class="col-lg-10 col-md-10 col-xs-10 col-sm-10">
+            <textarea id="content"  rows="4" required style="width: 100%;"></textarea>
+        </div>
+        <div class="col-lg-1 col-md-1 col-xs-1 col-sm-1">
+            <button class="btn btn-warning" onclick="cancel_text()"> 取消</button>
+            <br>
+            <br>
+            <button class="btn btn-success" onclick="back_text()"> 发送</button>
+        </div>
+        </div>
+
+    </div>
+    <div  id="begin" class=" container ">
+        <div class="row">
+            <div  class="col-lg-11 col-md-11 col-xs-11 col-sm-11"></div>
+        <button   class="btn btn-success btn-circle btn-xl" onclick="begin_text()">+</button><br>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+
+</footer>
+
 <script>
-    var visitid=sessionStorage.getItem("visitid");
-    document.getElementById("1").innerHTML=visitid;
-</script>
+    var textid=sessionStorage.getItem("textid");
+    var texttitle=sessionStorage.getItem("texttitle");
+    //document.getElementById("1").innerHTML=textid;
+    document.getElementById("textname").innerHTML=texttitle;
+    document.title=texttitle+"的内容";
+    var replyvalue=0;
+    document.getElementById("replyfloor").value=replyvalue;
+    function begin_text()
+    {
+        document.getElementById('back').style.display='';
+        document.getElementById('begin').style.display='none';
+        document.getElementById('replyfloor').value=0;
+
+
+    }
+    function back_text()
+    {
+        $.ajax({
+            url: "/reply/"+textid,
+            type: "post",
+            dataType: "json",
+            data : {
+                "textId":textid,
+                "pageContent":document.getElementById("content").value,
+                "replyFor":document.getElementById('replyfloor').value
+            },
+            success: function (data) {
+                if(data=="回复成功") {
+                    //这里的路径是相对于js的路径
+                    alert("回复成功~");
+                    document.getElementById('begin').style.display='';
+                    document.getElementById('content').value='';
+                    document.getElementById('back').style.display='none';
+                    //成功后自动折叠
+                }
+                else
+                    alert("回复失败，请确认回复楼层");
+            },
+            error: function (data) {
+                console.log("faild")
+                alert("回复失败，请确认回复楼层");
+            }
+        })
+
+    }
+    function cancel_text()
+    {
+        document.getElementById('begin').style.display='';
+        document.getElementById('content').value='';
+        document.getElementById('back').style.display='none';
+    }
+    function user_visit(userid)
+    {
+        sessionStorage.setItem("visitid", userid);
+        location.href = "info_visit.html";
+    }
+    function createtable(textfloor,replyfloor, textcontent, createtime, userid, username, userimg, area)//暂时不增加内容概要,area=text
+    {
+        var brDiv = document.createElement('br');
+        brDiv.innerHTML = "<br/>";
+        var divider = document.createElement('h5');
+        //divider.innerHTML="hello";
+        divider.className = "page-header";
+        divider.innerHTML="第"+textfloor+"楼:"
+        var cleardiv = document.createElement('div');
+        cleardiv.className = "clearfix";
+        var position = document.getElementById(area);
+        var div = document.createElement("div");
+        var div_user = document.createElement("div");
+        var div_text = document.createElement("div");
+        var pic = document.createElement("img");
+        var user_name = document.createElement("label");
+        var reply_floor = document.createElement("h5");
+        var text_content = document.createElement("h4");
+        var text_time = document.createElement("small");
+
+
+
+        div.class = "row";
+
+
+        div_user.className = "col-lg-2 col-md-2 col-xs-2 col-sm-2";
+        div_text.className = "col-lg-9 col-md-9 col-xs-9 col-sm-9";
+        div_user.setAttribute("onclick", "user_visit(" + userid + ")");
+
+
+        pic.src = userimg;
+        pic.className = "img-circle";
+
+        user_name.innerHTML = username;
+
+        if(replyfloor==0)reply_floor.style.display="none";
+        else reply_floor.innerHTML="@"+replyfloor+"楼：";
+        text_content.innerHTML = textcontent;
+        text_time.innerHTML = createtime;
+
+        div_user.appendChild(pic);
+        div_user.appendChild(brDiv);
+        div_user.appendChild(user_name);
+
+        div_text.appendChild(reply_floor);
+        div_text.appendChild(text_content);
+        div_text.appendChild(text_time);
+
+        div.appendChild(div_user);
+        div.appendChild(div_text);
+        div.appendChild(cleardiv);
+
+
+        position.appendChild(divider);
+        position.appendChild(div);
+
+
+    }
+    createtable(1,0, "11111111", "xxx-xx-xxx", 2, "hahaha", "../img/捕获.png", "text");
+    createtable(1,1, "11111111", "xxx-xx-xxx", 2, "hahaha", "../img/捕获.png", "text");
+    $(function () {
+
+        $('.setPageDiv').change(function () {
+
+            getMsg(parseInt($(this).val()))
+        })
+
+        function getMsg(num) {
+            $.ajax({
+                url: "/getDetailPage/"+textid,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    //1.计算分页数量
+                    var showNum = num;
+                    var dataL = data.list.length;
+                    var pageNum = Math.ceil(dataL / showNum);
+                    $('.Pagination').pagination(pageNum, {
+                        num_edge_entries: 1, //边缘页数
+                        num_display_entries: 4, //主体页数
+                        items_per_page: 1, //每页显示1项
+                        prev_text: "上一页",
+                        next_text: "下一页",
+                        callback: function (index) {
+                            //console.log(index);
+                            var html = '<ul>'
+                            // public class Page {
+                            //     private Integer textId;
+                            //     private Integer pageFloor;
+                            //     private Date pageRetime;
+                            //     private String pageContent;
+                            //     private User user;
+                            //     private Integer replyFor;
+                            // }
+                            console.log(showNum * index + '~' + parseInt(showNum * index) + parseInt(showNum))
+                            var ul = document.document.createElement("ul");
+                            for (var i = showNum * index; i < showNum * index + showNum; i++) {
+                                //console.log(i)
+                                if (i < dataL) {
+                                    let textid = data.list[i].textId;
+                                    let pagecontent = data.list[i].pageContent;
+                                    let replyfloor =data.list[i].replyFor;
+                                    let textfloor =data.list[i].replyFor;
+                                    let createtime = data.list[i].pageFloor;
+                                    let user = eval(data.list[i].user);
+                                    let userid = user.userId;
+                                    let username = user.userName;
+                                    let userimg = user.userImagePath;
+
+                                    createtablecreatetable(textfloor,replyfloor, pagecontent, createtime, userid, username, userimg, ul);
+
+
+                                }
+                            }
+                            document.getElementById("text").appendChild(nl);
+                        }
+                    })
+
+                }
+            })
+        }
+
+        getMsg(10)
+
+    });
+</script >
 </body>
 </html>
