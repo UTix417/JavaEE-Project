@@ -126,8 +126,8 @@ public class UserController {
 
     //本方法用来封禁一个用户请传入用户Id和解封时间,-1代表封禁失败
     @ResponseBody
-    @RequestMapping()
-    public int banUser(int userId,Date outTime,HttpSession session){
+    @RequestMapping("/banUser/{id}")
+    public int banUser(@PathVariable("id") int userId,Date outTime,HttpSession session){
         User now_user= (User) session.getAttribute("user");
         Integer userLevel = now_user.getUserLevel();
         if (userLevel<3)//3等级以上的人才能BAN用户
