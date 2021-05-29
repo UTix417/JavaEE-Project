@@ -85,10 +85,25 @@
                 currentUserId=userid;//存储现在会话的用户窗口
             });
             window["userArr"] = users;
+            var MessageTo=sessionStorage.getItem("MessageTo");
             $(".friendlist").empty();
             for (let i = 0; i < users.length; i++) {
                 let id = users[i].userId;
                 let username = users[i].userName;
+                if(id==MessageTo&&id!=currentUserId){
+                    $(".friendlist").append('<div class="userRow form-control" data-id="' + id + '"><span>' + username + '</span></div>');
+                    $(".toFriend").text(username + account);
+                    $(".toFriend").attr("toId", id);
+                    data["toId"]=id;
+                    $(".chatarea").show();
+                    $(".msghisDiv div[class^=his_]").hide();
+                    if ($(".msghisDiv .his_" + id).length == 0) {
+                        $(".msghisDiv").append('<div class="his_' + id + '"></div>');
+                    }
+                    $(".msghisDiv .his_" + id).show();
+                    $(".userRow[data-id=" + id + "]").addClass("activeFriend");
+                    continue;
+                }
                 $(".friendlist").append('<div class="userRow form-control" data-id="' + id + '"><span>' + username + '</span></div>');
             }
             $(".userRow").on("dblclick", function(e) {
