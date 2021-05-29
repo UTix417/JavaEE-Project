@@ -2,13 +2,186 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width,
+                                     initial-scale=1.0,
+                                     maximum-scale=1.0,
+                                     user-scalable=no">
+    <title>个人资料</title>
+
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        //$.get("/getMyInfo", "json", function(users) {
+    </script>
 </head>
 <body>
-<p id="1"></p>
-<script>
-    var visitid=sessionStorage.getItem("visitid");
-    document.getElementById("1").innerHTML=visitid;
-</script>
+<div class="container">
+    <div class="jumbotron">
+        <div class="row text-right">
+            <a  class="btn btn-inverse btn-sm"  onclick="back_to_main()">返回主页</a>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
+                <img id="pic" src="" class="img-circle">
+            </div>
+            <div class="col-lg-9 col-md-9 col-xs-9 col-sm-9">
+                <h1>
+                    <div class="form-inline row">
+                        <label id="username"></label>
+                        <input  id="message" type="button" class="btn btn-default btn-sm" onclick="messaging()" value="私信"></input>
+                        <input  id="ban" type="button" class="btn btn-danger btn-sm" onclick="ban_user()" value="禁言"></input>
+                        <input  id="cancel_ban" type="button" class="btn btn-success btn-sm" onclick="cancel_ban_user()" value="解禁"></input>
+                    </div>
+                </h1>
+
+                <h4>
+                    <span id ='banning' class="label label-danger">禁言中</span>
+                    <span id ='member' class="label label-primary">高级用户</span>
+                    <span id ='admin' class="label label-warning">管理员</span>
+                </h4>
+                <h3>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">用户id:</div>
+                        <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3" id="myid"></div>
+                        <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">注册日期:</div>
+                        <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3" id="birthday"></div>
+                        <div class="col"></div>
+                    </div>
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+    <script type="text/javascript">
+        var visitid=sessionStorage.getItem("visitid");
+        var levelmyself=3;
+        //返回主页
+        function back_to_main()
+        {
+            location.href = "main.html";
+        }
+        //私信跳转
+        function messaging()
+        {
+            sessionStorage.setItem("userId", visitid);
+            location.href = "Message.html";
+        }
+        function ban_user()
+        {
+            console.log(visitid);
+            var res = confirm("确认禁言这位用户吗？");
+            if (res) {
+                $.ajax({
+                    type: "POST",
+                    url: "/banUser/" + visitid,
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (result) {//result:响应的数据
+                        if (result == "main") {
+                            alert('禁言成功'); // 请求成功时的回调函数
+                            location.reload();
+                        } else {
+                            alert('禁言失败');
+                        }
+                    },
+                    error: function () {
+                        alert('禁言失败'); // 请求失败时的回调函数
+                    }
+                });
+            }
+        }
+        function cancel_ban_user()
+        {
+            console.log(visitid);
+            var res = confirm("确认为这位用户解禁吗？");
+            if (res) {
+                $.ajax({
+                    type: "POST",
+                    url: "/recoverUser/" + visitid,
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    success: function (result) {//result:响应的数据
+                        if (result == "main") {
+                            alert('解禁成功'); // 请求成功时的回调函数
+                            location.reload();
+                        } else {
+                            alert('解禁失败');
+                        }
+                    },
+                    error: function () {
+                        alert('解禁失败'); // 请求失败时的回调函数
+                    }
+                });
+            }
+        }
+        //标签display
+        $("#banning").css("display", "none");
+        $("#member").css("display", "none");
+        $("#admin").css("display", "none");
+        //禁言，高级用户，管理员标签默认不显示
+
+        //功能display
+        $("#ban").css("display", "none");
+        $("#cancel_ban").css("display", "none");
+
+
+        //获取我的权限
+        $.get("/user/getMyInfo",null,function(user){
+            console.log("begin");
+            levelmyself=user.userLevel;
+        });
+        console.log("getmyself");
+        $.get("/user/getUserInfo/"+visitid,null,function(user){
+            //myuser=eval(user);
+
+            // private Integer userId;
+            // private String userName;
+            // private String userPassword;
+            // private Integer userLevel;
+            // private Integer userState;
+            // private Date userCreateTime;
+            // private String userImagePath;
+            //渲染
+            document.title=user.userName+"的资料";
+            document.getElementById("username").innerHTML = user.userName;
+            document.getElementById("myid").innerHTML = visitid;
+            document.getElementById("birthday").innerHTML = user.userCreateTime.substring(0,10);
+            document.getElementById("pic").src=user.userImagePath;
+            //根据用户等级显示标签和功能
+            if(user.userState==1)
+            {
+                $("#banning").css("display", "");
+            }
+            if(user.userLevel==2) {
+                $("#member").css("display", "");
+            }
+            if(user.userLevel==3)
+            {
+                $("#admin").css("display", "");
+            }
+            if(levelmyself==3){
+                if(user.userState==1)
+                {
+                    $("#cancel_ban").css("display", "");
+                }else
+                {
+                    $("#ban").css("display", "");
+                }
+            }
+        });
+        console.log('visiting');
+
+    </script>
+</div>
+
 </body>
 </html>
