@@ -51,14 +51,11 @@
 <script >
   document.getElementById("blockname").innerHTML="hahaha";
   //alert("0000")
-
-  //接受blockid部分，取消注释会出错
-  // var block=eval('${block}');
-  // console.log(block);
-  // var blockid=block.blockId;
-  // document.title=block.blockName// 此处也可以使用text()方法
-  // document.getElementById("blockname").innerHTML=block.blockName;
-
+  var blockid=sessionStorage.getItem("blockid");
+  $.get("/getBlockById/"+blockid,null,function(block){
+    document.getElementById("blockname").innerHTML=block.blockName;
+    document.title=block.blockName
+  });
 
   //alert("1111");
   //var block=[[${block}]];
