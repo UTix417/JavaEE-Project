@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -93,6 +94,17 @@ public class PageController {
 //        log.info("textId");
         pageMapper.PageBack(textId);
         return "main";
+    }
+
+    //回帖,传入帖子id和回帖内容即可
+    @ResponseBody
+    @RequestMapping("/reply/{textId}")
+    public String replyText(@PathVariable("textId") int textId,String pageContent,HttpSession session){
+        int pageFloor = pageMapper.getMaxFloor(textId);
+        User user = (User) session.getAttribute("user");
+        Page page = new Page(textId, pageFloor, new Date(System.currentTimeMillis()), pageContent, user);
+        pageMapper.addPage(page);
+        return "回复成功";
     }
 
 

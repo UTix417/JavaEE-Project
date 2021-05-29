@@ -17,7 +17,7 @@
     <update id="TopPage">
         update text
         <set>
-            <if test="text_status!=null">text_status = 0</if>
+            <if test="text_status!=null">text_status = 2</if>
         </set>
         where text_id = #{text_id}
     </update>

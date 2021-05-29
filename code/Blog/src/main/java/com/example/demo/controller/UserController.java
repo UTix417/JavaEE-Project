@@ -124,7 +124,7 @@ public class UserController {
 //        return res;
 //    }
 
-    //本方法用来封禁一个用户请传入用户Id和解封时间,0代表封禁失败
+    //本方法用来封禁一个用户请传入用户Id和解封时间,-1代表封禁失败
     @ResponseBody
     @RequestMapping()
     public int banUser(int userId,Date outTime,HttpSession session){
