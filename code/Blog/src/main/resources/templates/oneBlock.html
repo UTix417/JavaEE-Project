@@ -51,8 +51,10 @@
 <script >
   document.getElementById("blockname").innerHTML="hahaha";
   //alert("0000")
-  var blockid=sessionStorage.getItem("blockid");
-  $.get("/getBlockById/"+blockid,null,function(block){
+  var blockId= location.search.replace(/[^\d]/g, "")
+
+
+  $.get("/getBlockById/"+blockId,null,function(block){
     document.getElementById("blockname").innerHTML=block.blockName;
     document.title=block.blockName
   });
@@ -284,7 +286,7 @@
 
     function getMsg(num) {
       $.ajax({
-        url: '/getAllTexts/'+blockid,
+        url: '/getAllTexts/'+blockId,
         type: 'GET',
         dataType: 'json',
         success: function (data) {
