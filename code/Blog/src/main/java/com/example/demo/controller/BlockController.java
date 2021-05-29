@@ -66,7 +66,10 @@ public class BlockController {
         return list;
     }
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     //    获取对应板块的信息
     @ResponseBody
     @GetMapping("/getBlockById/{id}")
