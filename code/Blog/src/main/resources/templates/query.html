@@ -3,8 +3,349 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 
+<div class="container">
+    <div class="text-right" >
+
+        <ul class="breadcrumb">
+            <li><a  class="btn btn-inverse btn-sm"  onclick="to_info()" style="font-size: 15px">个人中心</a></li>
+            <li><a  class="btn btn-inverse btn-sm"  onclick="back_to_main()" style="font-size: 15px">返回主页</a></li>
+        </ul>
+    </div>
+    <div class="jumbotron">
+        <h1 >查询界面</h1>
+        <div class="col-lg-8 col-md-8 col-xs-8 col-sm-8 text-right">
+            <p>查询标题:</p>
+        </div>
+            <div class="col-lg-4 col-md-4 col-xs-4 col-sm-4">
+                <div class="input-group">
+                    <input id="querytitle" type="text" class="form-control">
+                    <span class="input-group-btn">
+						<button class="btn btn-default" type="button" onclick="query_again()">
+							查询
+						</button>
+					</span>
+                </div><!-- /input-group -->
+            </div>
+
+
+    </div>
+</div>
+<div class="container ">
+    <div id="text" >
+        <!--正文部分-->
+    </div>
+
+</div>
+<div class="setPageDiv">
+    <div class="Pagination" id="pagination"></div>
+</div>
+<div class="container text-center">
+    <br>
+    <br>
+    <br>
+    <p>上海大学论坛 </p>
+
+</div>
+
+
+<script >
+    //alert("0000")
+    var texttitle=sessionStorage.getItem("title");
+    document.title="查询"+texttitle;
+    document.getElementById("querytitle").value=texttitle;
+    function query_again()
+    {
+        sessionStorage.setItem("title", document.getElementById("querytitle").value);
+        location.href = "query.html";
+    }
+    function to_info()
+    {
+        location.href = "infomyself.html";
+    }
+    function back_to_main()
+    {
+        location.href = "main.html";
+    }
+    function deletetext(textid) {
+        console.log(textid);
+        var res = confirm("确认封杀这个帖子吗？");
+        if (res) {
+            $.ajax({
+                type: "POST",
+                url: "/deletePage",
+                dataType: "JSON",
+                data: {
+                    "textId": textid
+                },
+                contentType: "application/json",
+                success: function (result) {//result:响应的数据
+                    if (result == "main") {
+                        alert('封禁成功'); // 请求成功时的回调函数
+                        location.reload();
+                    } else {
+                        alert('封禁失败');
+                    }
+                },
+                error: function () {
+                    alert('封禁失败'); // 请求失败时的回调函数
+                }
+            });
+        }
+    }
+
+    function backpage(textid) {
+        console.log(textid);
+        var res = confirm("确认撤销这个帖子的置顶吗？");
+        if (res) {
+            $.ajax({
+                type: "POST",
+                url: "/PageBack/" + textid,
+                dataType: "JSON",
+                data: {
+                    "textId": textid
+                },
+                contentType: "application/json",
+                success: function (result) {//result:响应的数据
+                    if (result == "main") {
+                        alert('撤销成功'); // 请求成功时的回调函数
+                        location.reload();
+                    } else {
+                        alert('撤销失败');
+                    }
+                },
+                error: function () {
+                    alert('撤销失败'); // 请求失败时的回调函数
+                }
+            });
+        }
+    }
+
+    function uptext(textid) {
+        console.log(textid);
+        var res = confirm("确认置顶这个帖子吗？");
+        if (res) {
+            $.ajax({
+                type: "POST",
+                url: "/topPage/" + textid,
+                dataType: "JSON",
+                data: {
+                    "textId": textid
+                },
+                contentType: "application/json",
+                success: function (result) {//result:响应的数据
+                    if (result == "main") {
+                        alert('置顶成功'); // 请求成功时的回调函数
+                        location.reload();
+                    } else {
+                        alert('置顶失败');
+                    }
+                },
+                error: function () {
+                    alert('置顶失败'); // 请求失败时的回调函数
+                }
+            });
+        }
+    }
+
+    function jmp_to_text(textid,mytitle) {
+        sessionStorage.setItem("textid", textid);
+        sessionStorage.setItem("texttitle", mytitle);
+        //sessionStorage.setItem("mytitle", "hahaha");
+        location.href = "onetext.html";
+    }
+    function user_visit(userid)
+    {
+        sessionStorage.setItem("visitid", userid);
+        location.href = "info_visit.html";
+    }
+
+    //
+    // </div>
+    function createtable(userlevel, textstatus, textid, texttitle, createtime, userid, username, userimg, area)//暂时不增加内容概要,area=text
+    {
+        var brDiv = document.createElement('br');
+        brDiv.innerHTML = "<br/>";
+        var divider = document.createElement('h5');
+        //divider.innerHTML="hello";
+        divider.className = "page-header";
+        var cleardiv = document.createElement('div');
+        cleardiv.className = "clearfix";
+        var position = document.getElementById(area);
+        var div = document.createElement("div");
+        var div_user = document.createElement("div");
+        var div_text = document.createElement("div");
+        var div_admin = document.createElement("div");
+        var pic = document.createElement("img");
+        var user_name = document.createElement("label");
+        var text_title = document.createElement("h3");
+        var text_time = document.createElement("small");
+        var delete_btn = document.createElement("button");
+        var up_btn = document.createElement("button");
+        var back_btn = document.createElement("button");
+
+
+        // div.id="div"+textid;
+        div.class = "row";
+
+        //div_user.id="div_user"+textid;
+        //div_text.id="div_text"+textid;
+        //div_admin.id="div_admin"+textid;
+
+        div_user.className = "col-lg-3 col-md-3 col-xs-3 col-sm-3";
+        div_text.className = "col-lg-7 col-md-7 col-xs-7 col-sm-7";
+        div_admin.className = "col-lg-2 col-md-2 col-xs-2 col-sm-2";
+        div_text.setAttribute("onclick", "jmp_to_text(" + textid + ",\""+texttitle+"\")");
+        div_user.setAttribute("onclick", "user_visit(" + userid + ")");
+
+        //pic.id="pic"+textid;
+        pic.src = userimg;
+        pic.className = "img-circle";
+        //user_name.id="user_name"+textid;//需要更改属性成为链接连到vis
+        user_name.innerHTML = username;
+
+        //text_title.id="text_title"+textid;//链接到textid
+        //text_time.id="text_time"+textid;
+        text_title.innerHTML = texttitle;
+        text_time.innerHTML = createtime;
+
+        //delete_btn.id="delete_btn"+textid;
+        //up_btn.id="up_btn"+textid;
+        delete_btn.className = "btn btn-danger btn-xs";
+        up_btn.className = "btn btn-success btn-xs";
+        back_btn.className = "btn btn-warning btn-xs";
+
+        delete_btn.innerHTML = "删除";
+        up_btn.innerHTML = "置顶";
+        back_btn.innerHTML = "恢复";
+        if (textstatus == '2') {
+            up_btn.style.display = "none";
+            back_btn.style.display = "";
+        } else {
+            back_btn.style.display = "none";
+            up_btn.style.display = "";
+        }
+        if (userlevel != 3) {
+            delete_btn.style.display = "none";
+            up_btn.style.display = "none";
+            back_btn.style.display = "none";
+        }
+
+        delete_btn.setAttribute("onclick", "deletetext(" + textid + ")");
+        up_btn.setAttribute("onclick", "uptext(" + textid + ")");
+        back_btn.setAttribute("onclick", "backpage(" + textid + ")");
+
+        div_user.appendChild(pic);
+        div_user.appendChild(brDiv);
+        div_user.appendChild(user_name);
+
+        div_text.appendChild(text_title);
+        div_text.appendChild(text_time);
+
+        div_admin.appendChild(delete_btn);
+        div_admin.appendChild(up_btn);
+        div_admin.appendChild(back_btn);
+
+
+        div.appendChild(div_user);
+        div.appendChild(div_text);
+        div.appendChild(div_admin);
+        div.appendChild(cleardiv);
+
+
+        position.appendChild(divider);
+        position.appendChild(div);
+
+
+    }
+    //alert("22222");
+    //测试createtable以及中间控件功能，实际使用时要删除
+    createtable(3,2,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+    createtable(3,1,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+    createtable(1,1,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+    createtable(3,2,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+    createtable(3,1,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+    createtable(1,1,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+    // createtable(2,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+    // createtable(2,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+
+
+    $(function () {
+
+        $('.setPageDiv').change(function () {
+
+            getMsg(parseInt($(this).val()))
+        })
+
+        function getMsg(num) {
+            $.ajax({
+                url: '/getTextsByTitle/'+texttitle,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    //1.计算分页数量
+                    var showNum = num;
+                    var dataL = data.list.length;
+                    var pageNum = Math.ceil(dataL / showNum);
+                    $('.Pagination').pagination(pageNum, {
+                        num_edge_entries: 1, //边缘页数
+                        num_display_entries: 4, //主体页数
+                        items_per_page: 1, //每页显示1项
+                        prev_text: "上一页",
+                        next_text: "下一页",
+                        callback: function (index) {
+                            //console.log(index);
+                            var html = '<ul>'
+                            // public class Text {
+                            //   private Integer textId;
+                            //   private String textTitle;
+                            //   private Integer textStatus;//0为封禁，1为正常，2为置顶
+                            //   private Date textCreateTime;
+                            //   private Integer blockId;
+                            //   private User user;
+                            // }
+
+                            console.log(showNum * index + '~' + parseInt(showNum * index) + parseInt(showNum))
+                            var ul = document.document.createElement("ul");
+                            for (var i = showNum * index; i < showNum * index + showNum; i++) {
+                                //console.log(i)
+                                if (i < dataL) {
+                                    var textid = data.list[i].textId;
+                                    var texttitle = data.list[i].textTitle;
+                                    var createtime = data.list[i].textCreateTime;
+                                    var textstatus = data.list[i].textStatus;
+                                    var user = eval(data.list[i].user);
+                                    var userid = user.userId;
+                                    var username = user.userName;
+                                    var userimg = user.userImagePath;
+                                    var userlevel;
+                                    $.get("/user/getMyInfo",null,function(myuser){
+                                        userlevel=myuser.userLevel;
+                                    });
+                                    createtable(userlevel, textstatus, textid, texttitle, createtime, userid, username, userimg, ul);
+
+
+                                }
+                            }
+                            document.getElementById("text").appendChild(nl);
+                        }
+                    })
+
+                }
+            })
+        }
+
+        getMsg(10)
+
+    });
+</script>
 </body>
 </html>
