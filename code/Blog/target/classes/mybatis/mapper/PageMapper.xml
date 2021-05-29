@@ -16,12 +16,24 @@
         insert into page values(#{textId},#{pageFloor},#{pageContent},#{user.userId},#{pageRetime})
     </insert>
 
+    <update id="TopPage">
+        update text
+        <set>
+            <if test="text_status!=null">text_status = 0</if>
+        </set>
+        where text_id = #{text_id}
+    </update>
+
     <delete id="deletePage">
         delete from page where text_id = #{textId} and page_floor = #{pageFloor}
     </delete>
 
     <select id="getMaxFloor" resultType="int">
         select max(page_floor) from page where text_id = #{textId}
+    </select>
+
+    <select id="getTextmaster" resultType="int">
+        select user_name from text where text_id=#{textId}
     </select>
 
     <resultMap id="page" type="com.example.demo.pojo.Page">

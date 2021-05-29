@@ -57,6 +57,15 @@ public class BlockController {
         return blockMapper.getAllBlocks();
     }
 
+    @ResponseBody
+    @GetMapping("/getblocksByLevel/{level}")
+    public List <Block> getBlockByLevel(@PathVariable("level") int level,Model model){
+        List <Block> list = blockMapper.getBlockByLevel(5);
+        model.addAttribute("block_list",list);
+        System.out.println(model);
+        return list;
+    }
+
 
     //    获取对应板块的信息
     @ResponseBody

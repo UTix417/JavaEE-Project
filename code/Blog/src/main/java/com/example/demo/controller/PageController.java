@@ -6,6 +6,7 @@ import com.example.demo.mapper.TextMapper;
 import com.example.demo.pojo.Page;
 import com.example.demo.pojo.Text;
 import com.example.demo.pojo.User;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import java.util.List;
  * @create 2021-05-19-11:29
  */
 @Controller
+@Slf4j
 @RequestMapping("/page")
 public class PageController {
     @Autowired
@@ -67,18 +69,29 @@ public class PageController {
 
     }
 
-//    JSON文件的测试
+    //通过传入textId可以使该帖子置顶
     @ResponseBody
-    @RequestMapping(value = "/json/data", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public String getByJSON(@RequestBody JSONObject jsonParam)
-    { // 直接将json信息打印出来
-         System.out.println(jsonParam.toJSONString());
-//         将获取的json数据封装一层，然后在给返回
-         JSONObject result = new JSONObject();
-         result.put("msg", "ok");
-         result.put("method", "json");
-         result.put("data", jsonParam);
-         return result.toJSONString();
+    @RequestMapping("topPage/{textId}")
+    public String TopPage(@PathVariable("textId") int textId,HttpSession session){
+        User now_user= (User) session.getAttribute("user");
+        int level = now_user.getUserLevel();//获得等级
+        if (level>=3)//如果不是管理员，无权置顶
+//        log.info("textId");
+        pageMapper.TopPage(textId);
+        return "main";
     }
-    
+
+    //帖子状态恢复正常
+    @ResponseBody
+    @RequestMapping("PageBack/{textId}")
+    public String PageBack(@PathVariable("textId") int textId,HttpSession session){
+        User now_user= (User) session.getAttribute("user");
+        int level = now_user.getUserLevel();//获得等级
+        if (level>=3)//如果不是管理员，无权恢复
+//        log.info("textId");
+        pageMapper.PageBack(textId);
+        return "main";
+    }
+
+
 }
