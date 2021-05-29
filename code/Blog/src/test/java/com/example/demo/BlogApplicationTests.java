@@ -40,7 +40,8 @@ class BlogApplicationTests {
 //        System.out.println(text2);
 //        text2.addAll(text1);
 //        System.out.println(text2);
-        System.out.println(messageMapper.getAllMessageByUserId(1, 2));
+        System.out.println(pageMapper.getAllPagesByTextId(1));
+//        System.out.println(messageMapper.getAllMessageByUserId(1, 2));
 //        System.out.println(userMapper.getUserById(1));
 //        userMapper.updateUser(user);
 //        System.out.println(blockMapper.getAllBlocks());

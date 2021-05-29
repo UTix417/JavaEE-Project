@@ -99,10 +99,10 @@ public class PageController {
     //回帖,传入帖子id和回帖内容即可
     @ResponseBody
     @RequestMapping("/reply/{textId}")
-    public String replyText(@PathVariable("textId") int textId,String pageContent,HttpSession session){
+    public String replyText(@PathVariable("textId") int textId,String pageContent,HttpSession session,int replyFor){
         int pageFloor = pageMapper.getMaxFloor(textId);
         User user = (User) session.getAttribute("user");
-        Page page = new Page(textId, pageFloor, new Date(System.currentTimeMillis()), pageContent, user);
+        Page page = new Page(textId, pageFloor, new Date(System.currentTimeMillis()), pageContent, user,pageFloor);
         pageMapper.addPage(page);
         return "回复成功";
     }
