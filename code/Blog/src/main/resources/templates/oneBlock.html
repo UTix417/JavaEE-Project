@@ -24,7 +24,7 @@
   <div class="jumbotron">
     <h1 id="blockname"></h1>
     <div class="text-right">
-      <botton id="publishtext" class=" btn btn-success btn-lg">我要发帖</botton>
+      <botton id="publish_text" class=" btn btn-success btn-lg">我要发帖</botton>
     </div>
 
   </div>
@@ -71,6 +71,9 @@
   //   private Integer blockLevel;
   //   private Integer blockNumber;
   // }
+  $('#publish_text').click(function (){
+    location.href = "textPublish.html";
+  });
   function to_info()
   {
     location.href = "infomyself.html";
