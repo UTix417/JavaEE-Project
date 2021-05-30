@@ -37,6 +37,8 @@ public class InviteCodeService {
         InviteCode inviteCode = new InviteCode(null, code, null, null, user.getUserId(), null);
         int result = inviteCodeMapper.updateInviteCode(inviteCode);
         if (result > 0 && user.getUserLevel() == 1){
+            user.setUserLevel(2);
+            userMapper.updateUser(user);
             return true;
         }else
             return false;
