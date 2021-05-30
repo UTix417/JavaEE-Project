@@ -86,7 +86,7 @@
             if (res) {
                 $.ajax({
                     type: "POST",
-                    url: "/banUser/" + visitid,
+                    url: "/user/banUser/" + visitid,
                     dataType: "JSON",
                     contentType: "application/json",
                     success: function (result) {//result:响应的数据
@@ -110,7 +110,7 @@
             if (res) {
                 $.ajax({
                     type: "POST",
-                    url: "/recoverUser/" + visitid,
+                    url: "/user/recoverUser/" + visitid,
                     dataType: "JSON",
                     contentType: "application/json",
                     success: function (result) {//result:响应的数据
