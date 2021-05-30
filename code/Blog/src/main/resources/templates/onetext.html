@@ -14,7 +14,7 @@
     <div class="text-right" >
 
         <ul class="breadcrumb">
-            <li><a  class="btn btn-inverse btn-sm"  onclick="to_info()" style="font-size: 15px">个人中心</a></li>
+            <li><a  class="btn btn-inverse btn-sm"  onclick="jmp1()" style="font-size: 15px">个人中心</a></li>
             <li><a  class="btn btn-inverse btn-sm"  onclick="back_to_main()" style="font-size: 15px">返回主页</a></li>
         </ul>
     </div>
@@ -26,7 +26,7 @@
     <div id="text" >
         <!--正文部分-->
     </div>
-
+    <div id="texts"></div>
 </div>
 <div class="setPageDiv">
     <div class="Pagination" id="pagination"></div>
@@ -85,14 +85,6 @@
     document.title=texttitle+"的内容";
     var replyvalue=0;
     document.getElementById("replyfloor").value=replyvalue;
-    function to_info()
-    {
-        location.href = "infomyself.html";
-    }
-    function back_to_main()
-    {
-        location.href = "main.html";
-    }
     function begin_text()
     {
         document.getElementById('back').style.display='';
@@ -104,11 +96,10 @@
     function back_text()
     {
         $.ajax({
-            url: "/reply/"+textid,
+            url: "/page/reply/"+textid,
             type: "post",
-            dataType: "json",
+            dataType: "text",
             data : {
-                "textId":textid,
                 "pageContent":document.getElementById("content").value,
                 "replyFor":document.getElementById('replyfloor').value
             },
@@ -119,6 +110,7 @@
                     document.getElementById('begin').style.display='';
                     document.getElementById('content').value='';
                     document.getElementById('back').style.display='none';
+                    window.location.reload();
                     //成功后自动折叠
                 }
                 else
@@ -126,7 +118,7 @@
             },
             error: function (data) {
                 console.log("faild")
-                alert("回复失败，请确认回复楼层");
+                alert("回复失败，请确认回复楼层!!!");
             }
         })
 
@@ -200,72 +192,85 @@
 
 
     }
-    createtable(1,0, "11111111", "xxx-xx-xxx", 2, "hahaha", "../img/捕获.png", "text");
-    createtable(1,1, "11111111", "xxx-xx-xxx", 2, "hahaha", "../img/捕获.png", "text");
-    $(function () {
-
-        $('.setPageDiv').change(function () {
-
-            getMsg(parseInt($(this).val()))
-        })
-
-        function getMsg(num) {
-            $.ajax({
-                url: "/getDetailPage/"+textid,
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    //1.计算分页数量
-                    var showNum = num;
-                    var dataL = data.list.length;
-                    var pageNum = Math.ceil(dataL / showNum);
-                    $('.Pagination').pagination(pageNum, {
-                        num_edge_entries: 1, //边缘页数
-                        num_display_entries: 4, //主体页数
-                        items_per_page: 1, //每页显示1项
-                        prev_text: "上一页",
-                        next_text: "下一页",
-                        callback: function (index) {
-                            //console.log(index);
-                            var html = '<ul>'
-                            // public class Page {
-                            //     private Integer textId;
-                            //     private Integer pageFloor;
-                            //     private Date pageRetime;
-                            //     private String pageContent;
-                            //     private User user;
-                            //     private Integer replyFor;
-                            // }
-                            console.log(showNum * index + '~' + parseInt(showNum * index) + parseInt(showNum))
-                            var ul = document.document.createElement("ul");
-                            for (var i = showNum * index; i < showNum * index + showNum; i++) {
-                                //console.log(i)
-                                if (i < dataL) {
-                                    let textid = data.list[i].textId;
-                                    let pagecontent = data.list[i].pageContent;
-                                    let replyfloor =data.list[i].replyFor;
-                                    let textfloor =data.list[i].replyFor;
-                                    let createtime = data.list[i].pageFloor;
-                                    let user = eval(data.list[i].user);
-                                    let userid = user.userId;
-                                    let username = user.userName;
-                                    let userimg = user.userImagePath;
-
-                                    createtablecreatetable(textfloor,replyfloor, pagecontent, createtime, userid, username, userimg, ul);
-
-
-                                }
-                            }
-                            document.getElementById("text").appendChild(nl);
-                        }
-                    })
-
-                }
-            })
+    function back_to_main()
+    {
+        location.href = "main.html";
+    }
+    function jmp1(){
+        //sessionStorage.setItem("user",$('#').text());//存储分区id或帖子id
+        location.href="infomyself.html";//跳转页面
+        //var blockid=sessionStorage.getItem("blockid");//跳转到的页面这样拿然后用$.get去拿json渲染页面
+    }
+    //createtable(1,0, "11111111", "xxx-xx-xxx", 2, "hahaha", "../img/捕获.png", "text");
+    //createtable(1,1, "11111111", "xxx-xx-xxx", 2, "hahaha", "../img/捕获.png", "text");
+    var pageno=1;
+    var last;
+    //var ul = document.createElement("ul");
+    function  initdata(texts) {
+        for(var i=0;i<texts.length;i++){
+            var pageFloor = texts[i].pageFloor;
+            var replyFor = texts[i].replyFor;
+            var pageContent = texts[i].pageContent;
+            var pageRetime = texts[i].pageRetime;
+            var user = eval(texts[i].user);
+            var userid = user.userId;
+            var username = user.userName;
+            var userimg = user.userImagePath;
+            var userlevel;
+            console.log(texts[i]);
+            $.get("/user/getMyInfo",null,function(myuser){
+                userlevel=myuser.userLevel;
+            });
+            console.log("实例化");
+            createtable(pageFloor,replyFor, pageContent, pageRetime, userid, username, userimg, "text")
+            //createtable(userlevel, textstatus, textid, texttitle, createtime, userid, username, userimg, "text");
         }
-
-        getMsg(10)
-
+        //document.getElementById("text").appendChild(ul);
+    }
+    //改变页码的函数
+    var change=function () {
+        $("#texts").text("");
+        var str='当前第'+pageno+'页,'+'共'+last+'页';
+        $("#texts").text(str);
+    }
+    //点击上一页、下一页的点击函数
+    $("#pre a").click(function () {
+        if(pageno>1){
+            pageno=pageno-1;
+            check();
+            change();
+        }
+    });
+    $("#next a").click(function () {
+        if(pageno<last){
+            pageno=pageno+1;
+            check();
+            change();
+        }
+    });
+    var pagesize=10;
+    var check=function () {
+        let url="/page/getDetailPage/"+textid;
+        $.get(url,{"pageno":pageno,"pagesize":pagesize},function (data) {
+            $('#text').empty();
+            initdata(data.pages);
+        },"json");
+    }
+    $(function () {
+        console.log("start");
+        let url="/page/getDetailPage/"+textid;
+        console.log(url);
+        $.get(url,{"pageno":1,"pagesize":pagesize},function (data) {
+            last=data.totalpage;
+            console.log(data);
+            initdata(data.pages);
+            change();
+        },"json");
+        $('.setPageDiv').change(function () {
+            pagesize=(parseInt($(this).val()));
+            check();
+            change();
+        })
     });
 </script >
 </body>

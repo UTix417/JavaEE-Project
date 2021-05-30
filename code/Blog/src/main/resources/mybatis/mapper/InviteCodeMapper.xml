@@ -9,7 +9,7 @@
     </insert>
 
     <update id="updateInviteCode">
-        update invitecode set invite_code_state = 1,user2_id = #{userId} where invite_code_content = #{inviteCodeContent} and invite_code_state = 0
+        update invitecode set invite_code_state = 1,user2_id = #{userId} where invite_code_content = #{inviteCodeContent}
     </update>
 
     <select id="getLastDateByUserId" resultType="java.util.Date">

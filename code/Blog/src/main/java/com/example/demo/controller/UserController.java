@@ -14,9 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -64,7 +62,23 @@ public class UserController {
         User user = (User) session.getAttribute("user");
         return user;
     }
+    @ResponseBody
+    @RequestMapping("/banUser/{id}")
+    public int banUser(@PathVariable("id") int userId,HttpSession session){
+        User now_user= (User) session.getAttribute("user");
+        Integer userLevel = now_user.getUserLevel();
+        System.out.println(userLevel);
 
+        Date date = new Date(); //取时间
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.add(calendar.DATE,1); //把日期往后增加一天,整数  往后推,负数往前移动
+        date=calendar.getTime(); //这个时间就是日期往后推一天的结果
+
+        if (userLevel<3)//3等级以上的人才能BAN用户
+            return -1;
+        return userMapper.banUser(userId,date);
+    }
     //本方法用来实现用户更新自己的信息,传所有要更新的User属性就可以，但UserId是必备的，同时密码不应该在这里修改
     @ResponseBody
     @RequestMapping("/updateInfo")
@@ -129,36 +143,5 @@ public class UserController {
 //        return res;
 //    }
 
-    //本方法用来封禁一个用户请传入用户Id和解封时间,-1代表封禁失败
-    //传入一个用户的ID，直接禁言1天
-    @ResponseBody
-    @RequestMapping("/banUser/{id}")
-    public int banUser(@PathVariable("id") int userId,HttpSession session){
-        User now_user= (User) session.getAttribute("user");
-        Integer userLevel = now_user.getUserLevel();
-        System.out.println(userLevel);
 
-        Date date = new Date(); //取时间
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(date);
-        calendar.add(calendar.DATE,1); //把日期往后增加一天,整数  往后推,负数往前移动
-        date=calendar.getTime(); //这个时间就是日期往后推一天的结果
-
-        if (userLevel<3)//3等级以上的人才能BAN用户
-            return -1;
-        return userMapper.banUser(userId,date);
-    }
-    
-    //传入用户ID 直接解封
-    @ResponseBody
-    @RequestMapping(value = "/recoverUser/{id}")
-    public int recoverUser(@PathVariable("id") int userId,HttpSession session){
-        User now_user= (User) session.getAttribute("user");
-        int level = now_user.getUserLevel();
-        if(level<3)//3等级以上的人才能BAN用户
-            return -1;
-        int res=0;
-        res = userMapper.recoverUser(userId);
-        return res;
-    }
 }

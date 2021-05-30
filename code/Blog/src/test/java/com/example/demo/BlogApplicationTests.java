@@ -62,6 +62,7 @@ class BlogApplicationTests {
 //        System.out.println(messageMapper.getAllMessageByUserId(2, 1));
 //        inviteCodeMapper.createInviteCode(inviteCode);
 //        inviteCodeMapper.updateInviteCode(inviteCode);
+        List<Page> allPagesByTextId = pageMapper.getAllPagesByTextId(1);
 //        System.out.println(inviteCodeMapper.getLastDateByUserId(1));
     }
 

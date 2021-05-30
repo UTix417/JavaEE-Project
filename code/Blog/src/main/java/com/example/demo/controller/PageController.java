@@ -3,9 +3,7 @@ package com.example.demo.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.mapper.PageMapper;
 import com.example.demo.mapper.TextMapper;
-import com.example.demo.pojo.Page;
-import com.example.demo.pojo.Text;
-import com.example.demo.pojo.User;
+import com.example.demo.pojo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,10 +41,27 @@ public class PageController {
 
     //本方法用来进入帖子查看详细内容
     @ResponseBody
-    @RequestMapping("getDetailPage/{textId}")
-    public List<Page> getDetailPage(@PathVariable("textId") int textId, Model model){
+    @RequestMapping("/getDetailPage/{textId}")
+    public Object getDetailPage(@PathVariable("textId") int textId, int pageno,int pagesize){
+        System.out.println("in getDetailPage");
         List<Page> pages = pageMapper.getAllPagesByTextId(textId);
-        return pages;
+        pageno--;
+        List<Page> res=new ArrayList();
+        System.out.println(pages);
+        int totalpage=pages.size()/pagesize;
+        if(pages.size()%pagesize!=0){
+            totalpage++;
+        }
+        for(int i=0;i<pagesize;i++){
+            if(i+pageno*pagesize==pages.size()){
+                break;
+            }
+            res.add(pages.get(i+pageno*pagesize));
+        }
+        pagein Pagein=new pagein();
+        Pagein.setPages(res);
+        Pagein.setTotalpage(totalpage);
+        return JSONObject.toJSONString(Pagein);
     }
 
     //该方法用来删除帖子 传入json表单 检测等级和发帖人的ID
@@ -100,9 +116,11 @@ public class PageController {
     @ResponseBody
     @RequestMapping("/reply/{textId}")
     public String replyText(@PathVariable("textId") int textId,String pageContent,HttpSession session,int replyFor){
+        System.out.println("in reply");
         int pageFloor = pageMapper.getMaxFloor(textId);
         User user = (User) session.getAttribute("user");
-        Page page = new Page(textId, pageFloor, new Date(System.currentTimeMillis()), pageContent, user,pageFloor);
+        Page page = new Page(textId, pageFloor+1, new Date(), pageContent, user,replyFor);
+        System.out.println(page);
         pageMapper.addPage(page);
         return "回复成功";
     }

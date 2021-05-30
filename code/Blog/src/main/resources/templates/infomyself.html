@@ -124,7 +124,7 @@
         document.getElementById("username").innerHTML = username;
         document.getElementById("myid").innerHTML = userid;
         document.getElementById("birthday").innerHTML = userCreateTime;
-        document.getElementById("pic").src=userImagePath;
+        //document.getElementById("pic").src=userImagePath;
         //获取基本信息
         $.get("/user/getMyInfo",null,function(user){
             //myuser=eval(user);
@@ -143,7 +143,7 @@
             document.getElementById("username").innerHTML = username;
             document.getElementById("myid").innerHTML = userid;
             document.getElementById("birthday").innerHTML = userCreateTime.substring(0,10);
-            document.getElementById("pic").src=userImagePath;
+            //document.getElementById("pic").src=userImagePath;
             //根据用户等级显示标签和功能
             if(user.userState==1)
             {
