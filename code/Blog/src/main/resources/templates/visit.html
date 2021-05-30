@@ -13,6 +13,7 @@
     div.block{
       border-style:outset;
       height:70px;
+      font-size:30px;
     }
   </style>
 </head>
@@ -42,7 +43,7 @@
         {
             let j=i%5;
             let name = blocks[i].blockName;
-            $(".blocklist").append('<div class="block" onclick="window.location.href=\'Login.html\'" data-id="' + name + '">' + pic[j] + '<u>' + name + '</u></div><br>');
+            $(".blocklist").append('<div class="block" onclick="location.href=\'Login.html\'" data-id="' + name + '">' + pic[j] + '<u>' + name + '</u></div><br>');
         }
     })
 </script>
