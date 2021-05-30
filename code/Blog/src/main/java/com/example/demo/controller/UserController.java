@@ -148,4 +148,17 @@ public class UserController {
             return -1;
         return userMapper.banUser(userId,date);
     }
+    
+    //传入用户ID 直接解封
+    @ResponseBody
+    @RequestMapping(value = "/recoverUser/{id}")
+    public int recoverUser(@PathVariable("id") int userId,HttpSession session){
+        User now_user= (User) session.getAttribute("user");
+        int level = now_user.getUserLevel();
+        if(level<3)//3等级以上的人才能BAN用户
+            return -1;
+        int res=0;
+        res = userMapper.recoverUser(userId);
+        return res;
+    }
 }
