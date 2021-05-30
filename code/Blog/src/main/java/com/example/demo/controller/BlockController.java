@@ -4,12 +4,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.demo.mapper.BlockMapper;
 import com.example.demo.pojo.Block;
 import com.example.demo.pojo.User;
-import com.sun.org.apache.xpath.internal.operations.Mod;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 /**
  * @author  王令
@@ -17,7 +19,7 @@ import java.util.List;
  * @version 1.0
  */
 
-@RestController
+@Controller
 public class BlockController {
 
     @Autowired
@@ -41,77 +43,74 @@ public class BlockController {
 //        return res.toString();
 //    }
 
-//    获得所有板块的信息
-    @ResponseBody
-    @GetMapping("/getAllBlocks")
-    public String getAllBlocks(Model model){
-        List <Block> list  =blockMapper.getAllBlocks();
+    //    获得所有板块的信息
+    @RequestMapping("/GetAllBlocks")
+    public String getAllBlocks(Model model)throws Exception{
+        List<Block> list = blockMapper.getAllBlocks();
         model.addAttribute("block_list",list);
-        return "getAllBlocks";
+        return "/visit";
     }
 
-    //以list形式返回所有板块信息
+    @RequestMapping("/visit")
+    public String visit() {
+        return "visit";
+    }
+    @RequestMapping("/main")
+    public String main() {
+        return "main";
+    }
+
     @ResponseBody
-    @GetMapping("/getAllBlocks_visitor")
-    public List <Block> getAllBlocks(){
+    @GetMapping("/getblocksByLevel")
+    public List <Block> getblocksByLevel(@RequestParam(value = "level") int level, Model model){
+        List <Block> list = blockMapper.getBlockByLevel(level);
+        model.addAttribute("block_list",list);
+        return blockMapper.getBlockByLevel(level);
+    }
+
+    @ResponseBody
+    @GetMapping("/getAllBlocks2")
+    public List<Block> getAllBlocks(HttpSession session){
+        //User user = new User(4,'111','654321',0,'2021-05-12','kkk',1);
+        //session.setAttribute("user",user);
         return blockMapper.getAllBlocks();
     }
 
+    //    获取对应板块的信息
     @ResponseBody
-    @GetMapping("/getblocksByLevel/{level}")
-    public List <Block> getBlockByLevel(@PathVariable("level") int level,Model model){
-        List <Block> list = blockMapper.getBlockByLevel(5);
-        model.addAttribute("block_list",list);
-        System.out.println(model);
-        return list;
-    }
-
-
-//    获取对应板块的信息
-//     @ResponseBody
-//     @GetMapping("/getBlockById/{id}")
-//     public String getBlockById(@PathVariable("id") int blockId, HttpSession session, Model model){
-//         /*
-//         edit by 李肖帆
-//         */
-//         session.setAttribute("blockid",blockId);
-//         Block block=blockMapper.getBlockById(blockId);
-//         model.addAttribute("block",block);
-//         return "oneBlock";
-//     }
-    
-     @ResponseBody
     @GetMapping("/getBlockById/{id}")
-    public Block getBlockById(@PathVariable("id") int blockId, HttpSession session, Model model){
+    public Block getBlockById(@PathVariable("id") int blockId, HttpSession session){
+        /*
+        edit by 李肖帆
+        */
         session.setAttribute("blockid",blockId);
         return blockMapper.getBlockById(blockId);
     }
 
-    @RequestMapping("blockAdd")
-    public String blockadd(@RequestParam(value = "block_id") Integer id,@RequestParam(value = "block_name") String name,@RequestParam(value = "level") Integer level,
-                           @RequestParam(value = "user_level") Integer u_level,Model model) {
-        String msg;
-        if (u_level < 3) {//等级不够则无法添加
-            System.out.println(222);
-            msg = "无添加资格";
-            model.addAttribute("msg", msg);
-            return "main";}
-        blockMapper.addBlock(id, name, level, 0);
-        msg = "添加成功";
-        model.addAttribute("msg", msg);
-        System.out.println(111);
-        return "main";
+    @ResponseBody
+    @RequestMapping(value = "/addBlock", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public String addBlock(@RequestBody JSONObject jsonParam,HttpSession session,Model model){
+        User now_user= (User) session.getAttribute("user");
+        int level = now_user.getUserLevel();
+        if(level<=3)//等级不够则无法删除
+            return "add_fail";
+        int block_id,block_level,block_number;
+        String block_name;
+        int res=0;
+        block_id=jsonParam.getInteger("block_id");
+        block_name=jsonParam.getString("block_name");
+        block_level=jsonParam.getInteger("block_level");
+        block_number=jsonParam.getInteger("block_number");
+        res=blockMapper.addBlock(block_id,block_name,block_level,block_number);
+        return "add_success";
     }
-    
+
     @RequestMapping("/blockadd")
     public String blockadd(@RequestParam(value = "block_id") Integer id,@RequestParam(value = "block_name") String name,@RequestParam(value = "block_level") Integer level) {
         blockMapper.addBlock(id, name, level, 0);
         return "main";
     }
-    @ResponseBody
-    @GetMapping("/getAllBlocks2")
-    public List<Block> getAllBlocks(HttpSession session){
-        return blockMapper.getAllBlocks();
-    }
+
+
 
 }

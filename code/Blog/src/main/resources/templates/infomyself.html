@@ -7,7 +7,7 @@
                                      maximum-scale=1.0,
                                      user-scalable=no">
     <title>个人资料</title>
-    
+
     <!-- 新 Bootstrap 核心 CSS 文件 -->
     <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
@@ -20,17 +20,10 @@
 </head>
 <body>
 <div class="container">
-    <div class="text-right" >
-
-        <ul class="breadcrumb">
-            <li><a  class="btn btn-inverse btn-sm"  onclick="to_message()" style="font-size: 15px">信箱</a></li>
-            <li><a  class="btn btn-inverse btn-sm"  onclick="back_to_main()" style="font-size: 15px">返回主页</a></li>
-        </ul>
-    </div>
-    <div class="jumbotron">
+    <div class="jumbotron" style="background-color: #66CCFF;">
         <div class="row">
             <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
-                <img id="pic" src="" class="img-circle">
+                <img style="width:80%;" id="pic" src="https://i.loli.net/2021/05/30/QmRtjw1b8hUJIzB.jpg" class="img-circle">
             </div>
             <div class="col-lg-9 col-md-9 col-xs-9 col-sm-9">
                 <h1>
@@ -61,40 +54,40 @@
                         <div class="col"></div>
                     </div>
                 </h3>
-                    <div class="text-right panel-group" id="accordion1">
+                <div class="text-right panel-group" id="accordion1">
 
-                        <a href="#ckey" class="btn btn-inverse btn-sm" data-parent="#accordion1" data-toggle="collapse" id="colkey">密码修改</a>
-                        <a href="#invite" class="btn btn-inverse btn-sm" data-parent="#accordion1" data-toggle="collapse" id="colinvite">邀请用户</a>
-                        <a href="#invited" class="btn btn-inverse btn-sm" data-parent="#accordion1" data-toggle="collapse" id="colinvited">升级用户</a>
+                    <a href="#ckey" class="btn btn-inverse btn-sm" data-parent="#accordion1" data-toggle="collapse" id="colkey">密码修改</a>
+                    <a href="#invite" class="btn btn-inverse btn-sm" data-parent="#accordion1" data-toggle="collapse" id="colinvite">邀请用户</a>
+                    <a href="#invited" class="btn btn-inverse btn-sm" data-parent="#accordion1" data-toggle="collapse" id="colinvited">升级用户</a>
+
+                </div>
+                <h4>
+                    <div id="ckey" class="collapse">
+
+                        <span>旧密码：</span>
+                        <input type="password" id="oldkey" class="form-control " placeholder="旧密码" />
+
+
+                        <span>新密码：</span>
+                        <input type="password" id="newkey" class="form-control" placeholder="新密码" />
+                        <button type="button" id="keybtn" class="btn btn-success">更改密码</button>
+
 
                     </div>
-                <h4>
-                        <div id="ckey" class="collapse">
-
-                            <span>旧密码：</span>
-                            <input type="password" id="oldkey" class="form-control " placeholder="旧密码" />
 
 
-                            <span>新密码：</span>
-                            <input type="password" id="newkey" class="form-control" placeholder="新密码" />
-                            <button type="button" id="keybtn" class="btn btn-success">更改密码</button>
+                    <div id="invite" class="collapse">
 
+                        <span>邀请代码:</span>
+                        <textarea id="invite_code"  rows="4" required style="width: 100%;"></textarea>
+                        <button type="button" id="get_invite_btn" class="btn btn-success">生成邀请码</button>
+                    </div>
+                    <div id="invited" class="collapse">
 
-                        </div>
-
-
-                        <div id="invite" class="collapse">
-
-                            <span>邀请代码:</span>
-                            <textarea id="invite_code"  rows="4" required style="width: 100%;"></textarea>
-                            <button type="button" id="get_invite_btn" class="btn btn-success">生成邀请码</button>
-                        </div>
-                        <div id="invited" class="collapse">
-
-                            <span>邀请代码:</span>
-                            <textarea id="invited_code"  rows="4" required style="width: 100%;"></textarea>
-                            <button type="button" id="be_invited_btn" class="btn btn-success">升级用户</button>
-                        </div>
+                        <span>邀请代码:</span>
+                        <textarea id="invited_code"  rows="4" required style="width: 100%;"></textarea>
+                        <button type="button" id="be_invited_btn" class="btn btn-success">升级用户</button>
+                    </div>
                 </h4>
 
 
