@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="js/jquery.pagination.js"></script>
+    <link href="js/pagination.css" rel="stylesheet" type="text/css" />
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+<div class="container">
+    <div class="text-right" >
+
+        <ul class="breadcrumb">
+            <li><a  class="btn btn-inverse btn-sm"  onclick="to_info()" style="font-size: 15px">个人中心</a></li>
+            <li><a  class="btn btn-inverse btn-sm"  onclick="back_to_main()" style="font-size: 15px">返回主页</a></li>
+        </ul>
+    </div>
+    <div class="jumbotron">
+        <h1 id="blockname"></h1>
+        <div class="text-right">
+            <botton id="publishtext" class=" btn btn-success btn-lg" onclick="Publish()">我要发帖</botton>
+        </div>
+
+    </div>
+</div>
+<div class="container ">
+    <div id="text" >
+        <!--正文部分-->
+    </div>
+
+</div>
+<div class="setPageDiv">
+    <div class="Pagination" id="pagination"></div>
+</div>
+<div class="container text-center">
+    <br>
+    <br>
+    <br>
+    <p>上海大学论坛 </p>
+
+</div>
+
+
+
+
+<script >
+    document.getElementById("blockname").innerHTML="hahaha";
+    //alert("0000")
+    var blockId= location.search.replace(/[^\d]/g, "")
+    console.log(blockId);
+
+    $.get("/getBlockById/"+blockId,null,function(block){
+        console.log("to getBlockById")
+        document.getElementById("blockname").innerHTML=block.blockName;
+        document.title=block.blockName
+    });
+
+    //alert("1111");
+    //var block=[[${block}]];
+    // public class Block {
+    //   private Integer blockId;
+    //   private String blockName;
+    //   private Integer blockLevel;
+    //   private Integer blockNumber;
+    // }
+    function to_info()
+    {
+        location.href = "infomyself.html";
+    }
+    function Publish(){
+        location.href="TextPublish.html"
+    }
+    function back_to_main()
+    {
+        location.href = "main.html";
+    }
+    function deletetext(textid) {
+        console.log(textid);
+        var res = confirm("确认封杀这个帖子吗？");
+        if (res) {
+            $.ajax({
+                type: "POST",
+                url: "/deletePage",
+                dataType: "JSON",
+                data: {
+                    "textId": textid
+                },
+                contentType: "application/json",
+                success: function (result) {//result:响应的数据
+                    if (result == "main") {
+                        alert('封禁成功'); // 请求成功时的回调函数
+                        location.reload();
+                    } else {
+                        alert('封禁失败');
+                    }
+                },
+                error: function () {
+                    alert('封禁失败'); // 请求失败时的回调函数
+                }
+            });
+        }
+    }
+
+    function backpage(textid) {
+        console.log(textid);
+        var res = confirm("确认撤销这个帖子的置顶吗？");
+        if (res) {
+            $.ajax({
+                type: "POST",
+                url: "/PageBack/" + textid,
+                dataType: "JSON",
+                data: {
+                    "textId": textid
+                },
+                contentType: "application/json",
+                success: function (result) {//result:响应的数据
+                    if (result == "main") {
+                        alert('撤销成功'); // 请求成功时的回调函数
+                        location.reload();
+                    } else {
+                        alert('撤销失败');
+                    }
+                },
+                error: function () {
+                    alert('撤销失败'); // 请求失败时的回调函数
+                }
+            });
+        }
+    }
+
+    function uptext(textid) {
+        console.log(textid);
+        var res = confirm("确认置顶这个帖子吗？");
+        if (res) {
+            $.ajax({
+                type: "POST",
+                url: "/topPage/" + textid,
+                dataType: "JSON",
+                data: {
+                    "textId": textid
+                },
+                contentType: "application/json",
+                success: function (result) {//result:响应的数据
+                    if (result == "main") {
+                        alert('置顶成功'); // 请求成功时的回调函数
+                        location.reload();
+                    } else {
+                        alert('置顶失败');
+                    }
+                },
+                error: function () {
+                    alert('置顶失败'); // 请求失败时的回调函数
+                }
+            });
+        }
+    }
+
+    function jmp_to_text(textid,mytitle) {
+        sessionStorage.setItem("textid", textid);
+        sessionStorage.setItem("texttitle", mytitle);
+        //sessionStorage.setItem("mytitle", "hahaha");
+        location.href = "onetext.html";
+    }
+    function user_visit(userid)
+    {
+        sessionStorage.setItem("visitid", userid);
+        location.href = "info_visit.html";
+    }
+
+    //
+    // </div>
+    function createtable(userlevel, textstatus, textid, texttitle, createtime, userid, username, userimg, area)//暂时不增加内容概要,area=text
+    {
+        var brDiv = document.createElement('br');
+        brDiv.innerHTML = "<br/>";
+        var divider = document.createElement('h5');
+        //divider.innerHTML="hello";
+        divider.className = "page-header";
+        var cleardiv = document.createElement('div');
+        cleardiv.className = "clearfix";
+        var position = document.getElementById(area);
+        var div = document.createElement("div");
+        var div_user = document.createElement("div");
+        var div_text = document.createElement("div");
+        var div_admin = document.createElement("div");
+        var pic = document.createElement("img");
+        var user_name = document.createElement("label");
+        var text_title = document.createElement("h3");
+        var text_time = document.createElement("small");
+        var delete_btn = document.createElement("button");
+        var up_btn = document.createElement("button");
+        var back_btn = document.createElement("button");
+
+
+        // div.id="div"+textid;
+        div.class = "row";
+
+        //div_user.id="div_user"+textid;
+        //div_text.id="div_text"+textid;
+        //div_admin.id="div_admin"+textid;
+
+        div_user.className = "col-lg-3 col-md-3 col-xs-3 col-sm-3";
+        div_text.className = "col-lg-7 col-md-7 col-xs-7 col-sm-7";
+        div_admin.className = "col-lg-2 col-md-2 col-xs-2 col-sm-2";
+        div_text.setAttribute("onclick", "jmp_to_text(" + textid + ",\""+texttitle+"\")");
+        div_user.setAttribute("onclick", "user_visit(" + userid + ")");
+
+        //pic.id="pic"+textid;
+        pic.src = userimg;
+        pic.className = "img-circle";
+        //user_name.id="user_name"+textid;//需要更改属性成为链接连到vis
+        user_name.innerHTML = username;
+
+        //text_title.id="text_title"+textid;//链接到textid
+        //text_time.id="text_time"+textid;
+        text_title.innerHTML = texttitle;
+        text_time.innerHTML = createtime;
+
+        //delete_btn.id="delete_btn"+textid;
+        //up_btn.id="up_btn"+textid;
+        delete_btn.className = "btn btn-danger btn-xs";
+        up_btn.className = "btn btn-success btn-xs";
+        back_btn.className = "btn btn-warning btn-xs";
+
+        delete_btn.innerHTML = "删除";
+        up_btn.innerHTML = "置顶";
+        back_btn.innerHTML = "恢复";
+        if (textstatus == '2') {
+            up_btn.style.display = "none";
+            back_btn.style.display = "";
+        } else {
+            back_btn.style.display = "none";
+            up_btn.style.display = "";
+        }
+        if (userlevel != 3) {
+            delete_btn.style.display = "none";
+            up_btn.style.display = "none";
+            back_btn.style.display = "none";
+        }
+
+        delete_btn.setAttribute("onclick", "deletetext(" + textid + ")");
+        up_btn.setAttribute("onclick", "uptext(" + textid + ")");
+        back_btn.setAttribute("onclick", "backpage(" + textid + ")");
+
+        div_user.appendChild(pic);
+        div_user.appendChild(brDiv);
+        div_user.appendChild(user_name);
+
+        div_text.appendChild(text_title);
+        div_text.appendChild(text_time);
+
+        div_admin.appendChild(delete_btn);
+        div_admin.appendChild(up_btn);
+        div_admin.appendChild(back_btn);
+
+
+        div.appendChild(div_user);
+        div.appendChild(div_text);
+        div.appendChild(div_admin);
+        div.appendChild(cleardiv);
+
+
+        position.appendChild(divider);
+        position.appendChild(div);
+
+
+    }
+    //alert("22222");
+    //createtable(3,2,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+    //createtable(3,1,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+    //createtable(1,1,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+    //createtable(3,2,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+    //createtable(3,1,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+    //createtable(1,1,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+    // createtable(2,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+    // createtable(2,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+    var initdata=function (data) {
+        for(var i=0;i<data.length;i++){
+            createtable(data[i].)
+        }
+    }
+    //改变页码的函数
+    var change=function () {
+        $("#text").text("");
+        var str='当前第'+pageno+'页,'+'共'+last+'页';
+        $("#text").text(str);
+    }
+    //点击上一页、下一页的点击函数
+    var check=function () {
+        $.get("http://localhost:8080/find",{"pageno":pageno,"pagesize":pagesize},function (data) {
+            $("tbody").html("");
+            initdata(data.students);
+        },"json");
+    }
+    $("#pre a").click(function () {
+        if(pageno>1){
+            pageno=pageno-1;
+            check();
+            change();
+        }
+    });
+    $("#next a").click(function () {
+        if(pageno<last){
+            pageno=pageno+1;
+            check();
+            change();
+        }
+    });
+    var pagesize=10;
+    $(function () {
+        $('.setPageDiv').change(function () {
+            getMsg(parseInt($(this).val()))
+        })
+        console.log("分页");
+        function getMsg(num) {
+            let url="/getTextsByBlockId/"+blockId;
+            $.get("",{"pageno":num,"pagesize":pagesize},function (data) {
+                last=data.totalpage;
+                initdata(data.texts);
+                change();
+            },"json");
+        }
+    });
+</script>
+</body>
+</html>

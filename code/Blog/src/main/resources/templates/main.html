@@ -13,7 +13,6 @@
         div.block{
             border-style:outset;
             height:70px;
-            font-size: 30px;
         }
     </style>
 </head>
@@ -23,20 +22,20 @@
         <h1 style="color:white;font-family: '楷体',serif">欢迎来到上大论坛</h1>
     </div>
     <div >
-    <p class="navbar-text">欢迎你，用户</p>
-    <button class="btn btn-default navbar-btn" onclick="jmp1()">个人页面</button>
-    <button class="btn btn-default navbar-btn"  id="blockadd" onclick="add_block()" style="display:none">添加分区</button>
+        <p class="navbar-text">欢迎你，用户</p>
+        <button class="btn btn-default navbar-btn" onclick="jmp1()">个人页面</button>
+        <button class="btn btn-default navbar-btn"  id="blockadd" onclick="add_block()" style="display:none">添加分区</button>
     </div>
     <form method="post" action="blockadd">
-    <div class="block_con" id="block_con" style="display: none">
-        <p>板块名字:</p>
-        <label for="block_name" class="sr-only">板块名字</label>
-        <input type="text" id="block_name" name="block_name" class="form-control" placeholder="板块名字" required autofocus>
-        <p>板块等级:</p>
-        <label for="block_level" class="sr-only">板块等级</label>
-        <input type="text" id="block_level" name="block_level" class="form-control" placeholder="板块等级" required>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">确定</button>
-    </div>
+        <div class="block_con" id="block_con" style="display: none">
+            <p>板块名字:</p>
+            <label for="block_name" class="sr-only">板块名字</label>
+            <input type="text" id="block_name" name="block_name" class="form-control" placeholder="板块名字" required autofocus>
+            <p>板块等级:</p>
+            <label for="block_level" class="sr-only">板块等级</label>
+            <input type="text" id="block_level" name="block_level" class="form-control" placeholder="板块等级" required>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">确定</button>
+        </div>
     </form>
     <div class="blocklist">
 

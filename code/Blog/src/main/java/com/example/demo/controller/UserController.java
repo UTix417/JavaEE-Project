@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 /**
@@ -67,8 +68,12 @@ public class UserController {
     //本方法用来实现用户更新自己的信息,传所有要更新的User属性就可以，但UserId是必备的，同时密码不应该在这里修改
     @ResponseBody
     @RequestMapping("/updateInfo")
-    public User updateUserInfo(int userId,String userName,String img){
-        User user = new User(userId, userName, null, null, null, null, img);
+    public User updateUserInfo(@RequestBody Map<String,Object> map){
+        System.out.println(map);
+        User user = new User();
+        user.setUserId((Integer) map.get("userId"));
+        user.setUserName((String) map.get("userName"));
+        System.out.println(user);
         userMapper.updateUser(user);
         return user;
     }

@@ -7,8 +7,8 @@ import java.io.Serializable;
 
 @Configuration
 public class WebSocketConfiger implements Serializable {
-//    @Bean
-//    public ServerEndpointExporter serverEndpointExporter() {
-//        return new ServerEndpointExporter();
-//    }
+    @Bean
+    public ServerEndpointExporter serverEndpointExporter() {
+        return new ServerEndpointExporter();
+    }
 }

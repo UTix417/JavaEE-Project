@@ -9,6 +9,7 @@
   <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
   <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
   <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdn.bootcss.com/moment.js/2.22.1/moment.min.js"></script>
 </head>
 <body>
 
@@ -30,7 +31,10 @@
 </div>
 <div class="container ">
   <div id="text" >
-  <!--正文部分-->
+    <!--正文部分-->
+  </div>
+  <div id="texts">
+
   </div>
 
 </div>
@@ -215,7 +219,7 @@
     //text_title.id="text_title"+textid;//链接到textid
     //text_time.id="text_time"+textid;
     text_title.innerHTML = texttitle;
-    text_time.innerHTML = createtime;
+    text_time.innerHTML = moment(createtime).format('YYYY-MM-DD h:mm:ss');
 
     //delete_btn.id="delete_btn"+textid;
     //up_btn.id="up_btn"+textid;
@@ -267,83 +271,84 @@
 
   }
   //alert("22222");
-  createtable(3,2,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
-  createtable(3,1,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
-  createtable(1,1,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
-  createtable(3,2,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
-  createtable(3,1,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
-  createtable(1,1,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+  //createtable(3,2,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+  //createtable(3,1,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+  //createtable(1,1,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+  //createtable(3,2,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+  //createtable(3,1,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
+  //createtable(1,1,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
   // createtable(2,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
   // createtable(2,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
 
-
-  $(function () {
-
-    $('.setPageDiv').change(function () {
-
-      getMsg(parseInt($(this).val()))
-    })
-
-    function getMsg(num) {
-      $.ajax({
-        url: '/getAllTexts/'+blockId,
-        type: 'GET',
-        dataType: 'json',
-        success: function (data) {
-          //1.计算分页数量
-          var showNum = num;
-          var dataL = data.list.length;
-          var pageNum = Math.ceil(dataL / showNum);
-          $('.Pagination').pagination(pageNum, {
-            num_edge_entries: 1, //边缘页数
-            num_display_entries: 4, //主体页数
-            items_per_page: 1, //每页显示1项
-            prev_text: "上一页",
-            next_text: "下一页",
-            callback: function (index) {
-              //console.log(index);
-              var html = '<ul>'
-              // public class Text {
-              //   private Integer textId;
-              //   private String textTitle;
-              //   private Integer textStatus;//0为封禁，1为正常，2为置顶
-              //   private Date textCreateTime;
-              //   private Integer blockId;
-              //   private User user;
-              // }
-
-              console.log(showNum * index + '~' + parseInt(showNum * index) + parseInt(showNum))
-              var ul = document.document.createElement("ul");
-              for (var i = showNum * index; i < showNum * index + showNum; i++) {
-                //console.log(i)
-                if (i < dataL) {
-                  var textid = data.list[i].textId;
-                  var texttitle = data.list[i].textTitle;
-                  var createtime = data.list[i].textCreateTime;
-                  var textstatus = data.list[i].textStatus;
-                  var user = eval(data.list[i].user);
-                  var userid = user.userId;
-                  var username = user.userName;
-                  var userimg = user.userImagePath;
-                  var userlevel;
-                  $.get("/user/getMyInfo",null,function(myuser){
-                    userlevel=myuser.userLevel;
-                  });
-                  createtable(userlevel, textstatus, textid, texttitle, createtime, userid, username, userimg, ul);
-
-
-                }
-              }
-              document.getElementById("text").appendChild(nl);
-            }
-          })
-
-        }
-      })
+  var pageno=1;
+  var last;
+  //var ul = document.createElement("ul");
+  function  initdata(texts) {
+    for(var i=0;i<texts.length;i++){
+      var textid = texts[i].textId;
+      var texttitle = texts[i].textTitle;
+      var createtime = texts[i].textCreateTime;
+      var textstatus = texts[i].textStatus;
+      var user = eval(texts[i].user);
+      var userid = user.userId;
+      var username = user.userName;
+      var userimg = user.userImagePath;
+      var userlevel;
+      $.get("/user/getMyInfo",null,function(myuser){
+        userlevel=myuser.userLevel;
+      });
+      console.log("实例化");
+      createtable(userlevel, textstatus, textid, texttitle, createtime, userid, username, userimg, "text");
     }
-
-    getMsg(10)
-
+    //document.getElementById("text").appendChild(ul);
+  }
+  //改变页码的函数
+  var change=function () {
+    $("#texts").text("");
+    var str='当前第'+pageno+'页,'+'共'+last+'页';
+    $("#texts").text(str);
+  }
+  //点击上一页、下一页的点击函数
+  $("#pre a").click(function () {
+    if(pageno>1){
+      pageno=pageno-1;
+      check();
+      change();
+    }
+  });
+  $("#next a").click(function () {
+    if(pageno<last){
+      pageno=pageno+1;
+      check();
+      change();
+    }
+  });
+  var pagesize=10;
+  var check=function () {
+    let url="/getTextsByBlockId/"+blockId;
+    $.get(url,{"pageno":pageno,"pagesize":pagesize},function (data) {
+      $('#text').empty();
+      initdata(data.texts);
+    },"json");
+  }
+  $(function () {
+    $.get("/getBlockById/"+blockId,null,function(block){
+      console.log("to getBlockById")
+      document.getElementById("blockname").innerHTML=block.blockName;
+      document.title=block.blockName
+    },"json");
+    let url="/getTextsByBlockId/"+blockId;
+    $.get(url,{"pageno":1,"pagesize":pagesize},function (data) {
+      last=data.totalpage;
+      console.log(data);
+      initdata(data.texts);
+      change();
+    },"json");
+    $('.setPageDiv').change(function () {
+      pagesize=(parseInt($(this).val()));
+      check();
+      change();
+    })
   });
 </script>
 </body>

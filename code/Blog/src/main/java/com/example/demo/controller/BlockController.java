@@ -107,6 +107,11 @@ public class BlockController {
     public String blockadd(@RequestParam(value = "block_id") Integer id,@RequestParam(value = "block_name") String name,@RequestParam(value = "block_level") Integer level) {
         blockMapper.addBlock(id, name, level, 0);
         return "main";
-        }
+    }
+    @ResponseBody
+    @GetMapping("/getAllBlocks2")
+    public List<Block> getAllBlocks(HttpSession session){
+        return blockMapper.getAllBlocks();
+    }
 
 }
