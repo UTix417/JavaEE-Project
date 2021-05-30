@@ -8,13 +8,13 @@
         select * from user where user_id = #{userId}
     </select>
 
-    <update id="banUser">
-        update user
-        <set>
-            <if test="userState!=null">user_state = 1,</if>
-        </set>
-        where user_id = #{userId}
-    </update>
+<!--    <update id="banuser">-->
+<!--        update user-->
+<!--        <set>-->
+<!--            <if test="userState!=null">user_state = 1,</if>-->
+<!--        </set>-->
+<!--        where user_id = #{userId}-->
+<!--    </update>-->
 
     <update id="recoverUser">
         update user
