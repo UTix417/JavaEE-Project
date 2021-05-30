@@ -13,6 +13,7 @@
         div.block{
             border-style:outset;
             height:70px;
+            font-size: 30px;
         }
     </style>
 </head>
@@ -47,8 +48,8 @@
         location.href="infomyself.html";//跳转页面
         //var blockid=sessionStorage.getItem("blockid");//跳转到的页面这样拿然后用$.get去拿json渲染页面
     }
-    function jmp2(){
-        windows.location.herf='block.html?blockId='+this.blockId;
+    function jmp2(bid){
+        location.href='oneBlock.html?blockId='+bid;
     }
     function add_block(){
         document.getElementById("block_con").style.display = "block";
@@ -65,8 +66,9 @@
         for(let i = 0; i < num; i++)
         {
             let name = blocks[i].blockName;
+            let bid = blocks[i].blockId
             let j=i%5;
-            $(".blocklist").append('<div class="block" onclick="jmp2()" data-id="' + name + '">' + pic[j] + '<u>' + name + '</u></div><br>');
+            $(".blocklist").append('<div class="block" onclick="jmp2('+bid+')" data-id="' + name + '">' + pic[j] + '<u>' + name + '</u></div><br>');
         }
         var num2=num+1;
         $(".block_con").append('<input id="'+num2+'" value="'+num2+'" name="block_id" style="display: none">')
