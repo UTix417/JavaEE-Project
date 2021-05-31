@@ -11,7 +11,13 @@
     <insert id="addUser">
        insert into user(user_name,user_password,user_level,user_create_time,user_image_path,user_state) values(#{userName},#{userPassword},#{userLevel},#{userCreateTime},#{userImagePath},0)
     </insert>
-
+    <update id="recoverUser">
+        update user
+        <set>
+            <if test="userState!=null">user_state = 0,</if>
+        </set>
+        where user_id = #{userId}
+    </update>
     <update id="updateUser">
         update user
         <set>

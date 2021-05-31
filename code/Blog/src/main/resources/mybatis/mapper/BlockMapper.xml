@@ -9,7 +9,7 @@
     </select>
 
     <insert id="addBlock">
-        insert into block(block_id,block_name,block_level,block_number) values(#{block_id},#{block_name},#{block_level},#{block_number})
+        insert into block(block_id,block_name,block_level,block_number) values(#{block_id},#{block_name},#{block_level},0)
     </insert>
 
     <select id="getBlockById" resultMap="block">

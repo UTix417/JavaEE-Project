@@ -14,8 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -61,29 +60,60 @@ public class UserController {
     @RequestMapping("/getMyInfo")
     public User getMyInfo(HttpSession session){
         User user = (User) session.getAttribute("user");
+        System.out.println(user);
         return user;
     }
+    @ResponseBody
+    @RequestMapping("/banUser/{id}")
+    public int banUser(@PathVariable("id") int userId,HttpSession session){
+        User now_user= (User) session.getAttribute("user");
+        Integer userLevel = now_user.getUserLevel();
+        System.out.println(userLevel);
 
+        Date date = new Date(); //取时间
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.add(calendar.DATE,1); //把日期往后增加一天,整数  往后推,负数往前移动
+        date=calendar.getTime(); //这个时间就是日期往后推一天的结果
+
+        if (userLevel<3)//3等级以上的人才能BAN用户
+            return -1;
+        return userMapper.banUser(userId,date);
+    }
     //本方法用来实现用户更新自己的信息,传所有要更新的User属性就可以，但UserId是必备的，同时密码不应该在这里修改
     @ResponseBody
     @RequestMapping("/updateInfo")
-    public User updateUserInfo(int userId,String userName,String img){
-        User user = new User(userId, userName, null, null, null, null, img);
+    public User updateUserInfo(@RequestBody Map<String,Object> map){
+        System.out.println(map);
+        User user = new User();
+        user.setUserId((Integer) map.get("userId"));
+        user.setUserName((String) map.get("userName"));
+        System.out.println(user);
         userMapper.updateUser(user);
         return user;
     }
-
+    @ResponseBody
+    @RequestMapping(value = "/recoverUser/{id}")
+    public int recoverUser(@PathVariable("id") int userId,HttpSession session){
+        User now_user= (User) session.getAttribute("user");
+        int level = now_user.getUserLevel();
+        if(level<3)//3等级以上的人才能解禁
+            return -1;
+        int res=0;
+        res = userMapper.recoverUser(userId);
+        return res;
+    }
     //本方法用来更新密码,传参时记得传一新一旧两个密码
     @ResponseBody
     @RequestMapping("/updatePassword/{userId}")
-    public boolean updatePassword(@PathVariable("userId") int userId,Model model,String oldPassword,String newPassword,HttpSession session){
+    public String updatePassword(@PathVariable("userId") int userId,Model model,String oldPassword,String newPassword,HttpSession session){
         String password = userMapper.getUserById(userId).getUserPassword();
         if (oldPassword.equals(password)){
             userMapper.updateUser(new User(userId,null,newPassword,null,null,null,null));
-            return true;
+            return "true";
         }else {
             model.addAttribute("msg","旧密码错误，请确认密码正确");
-            return false;
+            return "false";
         }
     }
 
@@ -124,15 +154,5 @@ public class UserController {
 //        return res;
 //    }
 
-    //本方法用来封禁一个用户请传入用户Id和解封时间,0代表封禁失败
-    @ResponseBody
-    @RequestMapping()
-    public int banUser(int userId,Date outTime,HttpSession session){
-        User now_user= (User) session.getAttribute("user");
-        Integer userLevel = now_user.getUserLevel();
-        if (userLevel<3)//3等级以上的人才能BAN用户
-            return -1;
-        return userMapper.banUser(userId,outTime);
-    }
 
 }

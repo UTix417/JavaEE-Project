@@ -205,6 +205,7 @@
     //createtable(1,1, "11111111", "xxx-xx-xxx", 2, "hahaha", "../img/捕获.png", "text");
     var pageno=1;
     var last;
+    var userlevel=0;
     //var ul = document.createElement("ul");
     function  initdata(texts) {
         for(var i=0;i<texts.length;i++){
@@ -216,11 +217,9 @@
             var userid = user.userId;
             var username = user.userName;
             var userimg = user.userImagePath;
-            var userlevel;
+
             console.log(texts[i]);
-            $.get("/user/getMyInfo",null,function(myuser){
-                userlevel=myuser.userLevel;
-            });
+
             console.log("实例化");
             createtable(pageFloor,replyFor, pageContent, pageRetime, userid, username, userimg, "text")
             //createtable(userlevel, textstatus, textid, texttitle, createtime, userid, username, userimg, "text");
@@ -257,6 +256,9 @@
         },"json");
     }
     $(function () {
+        $.get("/user/getMyInfo",null,function(myuser){
+            userlevel=myuser.userLevel;
+        });
         console.log("start");
         let url="/page/getDetailPage/"+textid;
         console.log(url);

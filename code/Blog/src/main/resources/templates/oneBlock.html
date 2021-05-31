@@ -88,18 +88,18 @@
     if (res) {
       $.ajax({
         type: "POST",
-        url: "/deletePage",
-        dataType: "JSON",
+        url: "/page/deletePage",
+        dataType: "text",
         data: {
-          "textId": textid
+          "textId": textid,
+          "pageFloor":0
         },
-        contentType: "application/json",
         success: function (result) {//result:响应的数据
-          if (result == "main") {
+          if (result == 0) {
             alert('封禁成功'); // 请求成功时的回调函数
             location.reload();
           } else {
-            alert('封禁失败');
+            alert('封禁失败,权限出错');
           }
         },
         error: function () {
@@ -115,8 +115,8 @@
     if (res) {
       $.ajax({
         type: "POST",
-        url: "/PageBack/" + textid,
-        dataType: "JSON",
+        url: "/page/PageBack/" + textid,
+        dataType: "text",
         data: {
           "textId": textid
         },
@@ -142,8 +142,8 @@
     if (res) {
       $.ajax({
         type: "POST",
-        url: "/topPage/" + textid,
-        dataType: "JSON",
+        url: "/page/topPage/" + textid,
+        dataType: "text",
         data: {
           "textId": textid
         },
@@ -282,7 +282,7 @@
   //createtable(1,1,1,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
   // createtable(2,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
   // createtable(2,"mytitle","xxxx-xx-xx",4,"username","../img/捕获.png","text");
-
+  var userlevel=0;
   var pageno=1;
   var last;
   //var ul = document.createElement("ul");
@@ -296,11 +296,8 @@
       var userid = user.userId;
       var username = user.userName;
       var userimg = user.userImagePath;
-      var userlevel;
-      $.get("/user/getMyInfo",null,function(myuser){
-        userlevel=myuser.userLevel;
-      });
       console.log("实例化");
+      console.log(userlevel);
       createtable(userlevel, textstatus, textid, texttitle, createtime, userid, username, userimg, "text");
     }
     //document.getElementById("text").appendChild(ul);
@@ -335,6 +332,10 @@
     },"json");
   }
   $(function () {
+    $.get("/user/getMyInfo","json",function(myuser){
+      userlevel=myuser.userLevel;
+      console.log(myuser.userLevel);
+    });
     $.get("/getBlockById/"+blockId,null,function(block){
       console.log("to getBlockById")
       document.getElementById("blockname").innerHTML=block.blockName;

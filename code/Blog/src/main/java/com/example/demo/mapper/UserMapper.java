@@ -17,7 +17,7 @@ import java.util.Date;
 public interface UserMapper {
     //根据用户ID获取用户信息
     public User getUserById(Integer userId);
-
+    public int recoverUser(int userId);
     //注册用户,用户id应该为null
     public int addUser(User user);
 

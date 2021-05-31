@@ -86,15 +86,14 @@
             if (res) {
                 $.ajax({
                     type: "POST",
-                    url: "/banUser/" + visitid,
-                    dataType: "JSON",
-                    contentType: "application/json",
+                    url: "/user/banUser/" + visitid,
+                    dataType: "text",
                     success: function (result) {//result:响应的数据
-                        if (result == "main") {
+                        if (result !=-1) {
                             alert('禁言成功'); // 请求成功时的回调函数
                             location.reload();
                         } else {
-                            alert('禁言失败');
+                            alert('禁言失败,数据库错误');
                         }
                     },
                     error: function () {
@@ -110,11 +109,10 @@
             if (res) {
                 $.ajax({
                     type: "POST",
-                    url: "/recoverUser/" + visitid,
-                    dataType: "JSON",
-                    contentType: "application/json",
+                    url: "/user/recoverUser/" + visitid,
+                    dataType: "text",
                     success: function (result) {//result:响应的数据
-                        if (result == "main") {
+                        if (result !=-1) {
                             alert('解禁成功'); // 请求成功时的回调函数
                             location.reload();
                         } else {

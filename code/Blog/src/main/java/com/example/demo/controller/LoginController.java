@@ -48,6 +48,7 @@ public class LoginController {
     }
     @RequestMapping("/register")
     public String userRegister(String userName,String userPassword, HttpSession session){
+        System.out.println("用户注册");
         User user = new User(null, userName, userPassword, 1,0, new Date(System.currentTimeMillis()), null);
         userMapper.addUser(user);
         session.setAttribute("user",user);

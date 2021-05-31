@@ -4,15 +4,31 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.mapper.PageMapper">
     <select id="getAllPagesByTextId" resultMap="page">
-        select text_id,page_floor,page_content,page_retime,user.user_id,user.user_name
+        select text_id,page_floor,page_content,page_retime,user.user_id,user.user_name,page.page_replyFor
         from page,user
         where page.user_id = user.user_id and  text_id = #{textId}
         ORDER BY page_floor
     </select>
 
     <insert id="addPage">
-        insert into page values(#{textId},#{pageFloor},#{pageContent},#{user.userId},#{pageRetime})
+        insert into page values(#{textId},#{pageFloor},#{pageContent},#{user.userId},#{pageRetime},#{replyFor})
     </insert>
+
+    <update id="TopPage">
+        update text
+        <set>
+            <if test="text_status!=null">text_status = 2</if>
+        </set>
+        where text_id = #{text_id}
+    </update>
+
+    <update id="PageBack">
+        update text
+        <set>
+            <if test="text_status!=null">text_status = 1</if>
+        </set>
+        where text_id = #{text_id}
+    </update>
 
     <delete id="deletePage">
         delete from page where text_id = #{textId} and page_floor = #{pageFloor}
@@ -31,6 +47,7 @@
         <result property="pageFloor" column="page_floor"></result>
         <result property="pageContent" column="page_content"></result>
         <result property="pageRetime" column="page_retime"></result>
+        <result property="replyFor" column="page_replyfor"></result>
         <association property="user" javaType="com.example.demo.pojo.User">
             <id property="userId" column="user_id"></id>
             <result property="userName" column="user_name"></result>

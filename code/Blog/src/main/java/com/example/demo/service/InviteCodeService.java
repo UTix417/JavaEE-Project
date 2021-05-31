@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.mapper.InviteCodeMapper;
+import com.example.demo.mapper.UserMapper;
 import com.example.demo.pojo.InviteCode;
 import com.example.demo.pojo.User;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -17,6 +18,8 @@ import java.util.Date;
 public class InviteCodeService {
     @Autowired
     InviteCodeMapper inviteCodeMapper;
+    @Autowired
+    UserMapper userMapper;
     //本方法用来处理验证码的申请
     public String getInviteCode(int userId){
         Date lastDate = inviteCodeMapper.getLastDateByUserId(userId);
@@ -37,6 +40,8 @@ public class InviteCodeService {
         InviteCode inviteCode = new InviteCode(null, code, null, null, user.getUserId(), null);
         int result = inviteCodeMapper.updateInviteCode(inviteCode);
         if (result > 0 && user.getUserLevel() == 1){
+            user.setUserLevel(2);
+            userMapper.updateUser(user);
             return true;
         }else
             return false;

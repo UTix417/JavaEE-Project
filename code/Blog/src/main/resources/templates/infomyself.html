@@ -7,7 +7,7 @@
                                      maximum-scale=1.0,
                                      user-scalable=no">
     <title>个人资料</title>
-    
+
     <!-- 新 Bootstrap 核心 CSS 文件 -->
     <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
@@ -20,10 +20,17 @@
 </head>
 <body>
 <div class="container">
-    <div class="jumbotron">
+    <div class="text-right" >
+
+        <ul class="breadcrumb">
+            <li><a  class="btn btn-inverse btn-sm"  onclick="to_message()" style="font-size: 15px">信箱</a></li>
+            <li><a  class="btn btn-inverse btn-sm"  onclick="back_to_main()" style="font-size: 15px">返回主页</a></li>
+        </ul>
+    </div>
+    <div class="jumbotron" style="background-color: #66CCFF;">
         <div class="row">
             <div class="col-lg-3 col-md-3 col-xs-3 col-sm-3">
-                <img id="pic" src="" class="img-circle">
+                <img style="width:80%;" id="pic" src="https://i.loli.net/2021/05/30/QmRtjw1b8hUJIzB.jpg" class="img-circle">
             </div>
             <div class="col-lg-9 col-md-9 col-xs-9 col-sm-9">
                 <h1>
@@ -54,40 +61,40 @@
                         <div class="col"></div>
                     </div>
                 </h3>
-                    <div class="text-right panel-group" id="accordion1">
+                <div class="text-right panel-group" id="accordion1">
 
-                        <a href="#ckey" class="btn btn-inverse btn-sm" data-parent="#accordion1" data-toggle="collapse" id="colkey">密码修改</a>
-                        <a href="#invite" class="btn btn-inverse btn-sm" data-parent="#accordion1" data-toggle="collapse" id="colinvite">邀请用户</a>
-                        <a href="#invited" class="btn btn-inverse btn-sm" data-parent="#accordion1" data-toggle="collapse" id="colinvited">升级用户</a>
+                    <a href="#ckey" class="btn btn-inverse btn-sm" data-parent="#accordion1" data-toggle="collapse" id="colkey">密码修改</a>
+                    <a href="#invite" class="btn btn-inverse btn-sm" data-parent="#accordion1" data-toggle="collapse" id="colinvite">邀请用户</a>
+                    <a href="#invited" class="btn btn-inverse btn-sm" data-parent="#accordion1" data-toggle="collapse" id="colinvited">升级用户</a>
+
+                </div>
+                <h4>
+                    <div id="ckey" class="collapse">
+
+                        <span>旧密码：</span>
+                        <input type="password" id="oldkey" class="form-control " placeholder="旧密码" />
+
+
+                        <span>新密码：</span>
+                        <input type="password" id="newkey" class="form-control" placeholder="新密码" />
+                        <button type="button" id="keybtn" class="btn btn-success">更改密码</button>
+
 
                     </div>
-                <h4>
-                        <div id="ckey" class="collapse">
-
-                            <span>旧密码：</span>
-                            <input type="password" id="oldkey" class="form-control " placeholder="旧密码" />
 
 
-                            <span>新密码：</span>
-                            <input type="password" id="newkey" class="form-control" placeholder="新密码" />
-                            <button type="button" id="keybtn" class="btn btn-success">更改密码</button>
+                    <div id="invite" class="collapse">
 
+                        <span>邀请代码:</span>
+                        <textarea id="invite_code"  rows="4" required style="width: 100%;"></textarea>
+                        <button type="button" id="get_invite_btn" class="btn btn-success">生成邀请码</button>
+                    </div>
+                    <div id="invited" class="collapse">
 
-                        </div>
-
-
-                        <div id="invite" class="collapse">
-
-                            <span>邀请代码:</span>
-                            <textarea id="invite_code"  rows="4" required style="width: 100%;"></textarea>
-                            <button type="button" id="get_invite_btn" class="btn btn-success">生成邀请码</button>
-                        </div>
-                        <div id="invited" class="collapse">
-
-                            <span>邀请代码:</span>
-                            <textarea id="invited_code"  rows="4" required style="width: 100%;"></textarea>
-                            <button type="button" id="be_invited_btn" class="btn btn-success">升级用户</button>
-                        </div>
+                        <span>邀请代码:</span>
+                        <textarea id="invited_code"  rows="4" required style="width: 100%;"></textarea>
+                        <button type="button" id="be_invited_btn" class="btn btn-success">升级用户</button>
+                    </div>
                 </h4>
 
 
@@ -98,28 +105,30 @@
         </div>
 
     </div>
-    <script type="text/javascript">
+    <script>
         var username="unknow";
         var levelf=1;
         var userid=0;
         var userCreateTime="xxxx-yy-zz";
         var userImagePath="../img/捕获.png";
         var key;
-
+    
         $("#banning").css("display", "none");
         $("#member").css("display", "none");
         $("#admin").css("display", "none");
         $("#colinvite").css("display", "none");
         //禁言，高级用户，管理员标签；邀请用户功能默认不显示
 
-
+        //var myuser;
         //nowuser.username=username;
         document.getElementById("username").innerHTML = username;
         document.getElementById("myid").innerHTML = userid;
         document.getElementById("birthday").innerHTML = userCreateTime;
-        document.getElementById("pic").src=userImagePath;
+        //document.getElementById("pic").src=userImagePath;
         //获取基本信息
         $.get("/user/getMyInfo",null,function(user){
+            //myuser=eval(user);
+
             console.log("begin");
             console.log(user.userName);
             console.log(user);
@@ -134,16 +143,16 @@
             document.getElementById("username").innerHTML = username;
             document.getElementById("myid").innerHTML = userid;
             document.getElementById("birthday").innerHTML = userCreateTime.substring(0,10);
-            document.getElementById("pic").src=userImagePath;
+            //document.getElementById("pic").src=userImagePath;
             //根据用户等级显示标签和功能
-            if(levelf==0)
+            if(user.userState==1)
             {
                 $("#banning").css("display", "");
             }
             if(levelf==2) {
                 $("#member").css("display", "");
             }
-            if(levelf==5)
+            if(levelf==3)
             {
                 $("#admin").css("display", "");
             }
@@ -152,7 +161,17 @@
             }
 
         });
-
+        //返回主页
+        function back_to_main()
+        {
+            location.href = "main.html";
+        }
+        //私信跳转
+        function to_message()
+        {
+            sessionStorage.setItem("userId", userid);
+            location.href = "Message.html";
+        }
         function changename()//改昵称
         {
 
@@ -170,23 +189,19 @@
             {
                 //改昵称中
                 username=document.getElementById("div1").value;
-                // var user={
-                //     "userId" :userid,
-                //     "userName" : username,
-                //     "userImagePath" :null
-                // };//更改信息
+                var user={
+                     "userId" :userid,
+                     "userName" : username,
+                     "userImagePath" :null
+                };//更改信息
                 console.log(user);
                 //调用方法
                 $.ajax({
                     type:"POST",
                     url:"/user/updateInfo",
-                    dataType : "JSON",
-                    data:{
-                        "userId" :userid,
-                        "userName" : username,
-                        "userImagePath" :null
-                    },
-                    contentType:"application/json",
+                    dataType : "text",
+                    data:JSON.stringify(user),
+                    contentType:"application/json;charset=UTF-8",
                     success: function (result) {//result:响应的数据
                         alert('更改成功'); // 请求成功时的回调函数
                         //改回样式
@@ -216,13 +231,14 @@
             $.ajax({
                 url: "/user/updatePassword/"+userid,
                 type: "post",
-                dataType: "json",
+                dataType: "text",
                 data : {
                     "oldPassword": oldkey,
                     "newPassword": newkey
                 },
                 success: function (data) {
-                    if(data==true) {
+                    console.log(data);
+                    if(data=="true") {
                         //这里的路径是相对于js的路径
                         alert("更改成功");
                         document.getElementById("colkey").click();
@@ -248,7 +264,7 @@
             $.ajax({
                 url: "/user/inviteUpLevel",
                 type: "post",
-                dataType: "json",
+                dataType: "text",
                 data : {
                     "inviteCode": document.getElementById("invited_code").value,
                 },
@@ -257,6 +273,7 @@
                         //这里的路径是相对于js的路径
                         alert("升级成功");
                         document.getElementById("colinvited").click();
+                        window.location.reload();
                         //成功后自动折叠
                     }
                     else
@@ -270,9 +287,5 @@
         });
     </script>
 </div>
-
-
-
-
 </body>
 </html>
