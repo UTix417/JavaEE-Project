@@ -37,6 +37,9 @@ public class TextPublishController {
     public String TextPublish(HttpSession session, @RequestBody Map<String,Object> map){
         System.out.println("In TextPublishController controller");
         User now_user= (User) session.getAttribute("user");
+        if(now_user.getUserState()==1){
+            return "发帖失败，您已被禁言";
+        }
         String title=String.valueOf(map.get("title"));
         //session.setAttribute("blockid",1);
         String content= String.valueOf(map.get("content"));
