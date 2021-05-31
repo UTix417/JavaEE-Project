@@ -9,79 +9,44 @@
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <style>
-        div.block{
-            border-style:outset;
-            height:70px;
-            font-size: 30px;
-        }
-    </style>
 </head>
 <body style="height: 100%;margin:0">
 <div class="container" style="min-height:100%;height: 100%;padding-bottom: 60px;">
     <div class="jumbotron" style="background-color:#66CCFF">
         <h1 style="color:white;font-family: '楷体',serif">欢迎来到上大论坛</h1>
     </div>
-    <div >
-        <p class="navbar-text">欢迎你，用户</p>
+    <p class="navbar-text">欢迎你，用户
         <button class="btn btn-default navbar-btn" onclick="jmp1()">个人页面</button>
-        <button class="btn btn-default navbar-btn"  id="blockadd" onclick="add_block()" style="display:none">添加分区</button>
-    </div>
-    <form method="post" action="blockadd">
-        <div class="block_con" id="block_con" style="display: none">
-            <p>板块名字:</p>
-            <label for="block_name" class="sr-only">板块名字</label>
-            <input type="text" id="block_name" name="block_name" class="form-control" placeholder="板块名字" required autofocus>
-            <p>板块等级:</p>
-            <label for="block_level" class="sr-only">板块等级</label>
-            <input type="text" id="block_level" name="block_level" class="form-control" placeholder="板块等级" required>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">确定</button>
-        </div>
-    </form>
+    </p>
     <div class="blocklist">
 
     </div>
 </div>
 <script>
+    var flag;
+    //if(shenfen=="yonghu")
+    //flag
     function jmp1(){
         //sessionStorage.setItem("user",$('#').text());//存储分区id或帖子id
         location.href="infomyself.html";//跳转页面
         //var blockid=sessionStorage.getItem("blockid");//跳转到的页面这样拿然后用$.get去拿json渲染页面
     }
-    function jmp2(bid){
-        location.href='oneBlock.html?blockId='+bid;
+    function jmp2(){
+        windows.location.herf='block.html?blockId='+this.blockId;
     }
-    function add_block(){
-        document.getElementById("block_con").style.display = "block";
-    }
-    var num;
     $.get("/getAllBlocks2","json",function(blocks){
         var pic=new Array();
-        num=blocks.length;
-        pic[0]="<span class=\"glyphicon glyphicon-book\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
-        pic[1]="<span class=\"glyphicon glyphicon-briefcase\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
-        pic[2]="<span class=\"glyphicon glyphicon-cloud\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
-        pic[3]="<span class=\"glyphicon glyphicon-dashboard\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
-        pic[4]="<span class=\"glyphicon glyphicon-file\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
-        for(let i = 0; i < num; i++)
+        pic[0]="<span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
+        pic[1]="<span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
+        pic[2]="<span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
+        pic[3]="<span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
+        pic[4]="<span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\" style=\"color: #66CCFF\"></span>";
+        for(let i = 0; i < blocks.length; i++)
         {
             let name = blocks[i].blockName;
-            let bid = blocks[i].blockId
-            let j=i%5;
-            $(".blocklist").append('<div class="block" onclick="jmp2('+bid+')" data-id="' + name + '">' + pic[j] + '<u>' + name + '</u></div><br>');
-        }
-        var num2=num+1;
-        $(".block_con").append('<input id="'+num2+'" value="'+num2+'" name="block_id" style="display: none">')
-    })
-    $.get("/user/getMyInfo",null,function(user){
-        var userlevel;
-        userlevel=user.userLevel;
-        if(userlevel==3){
-            document.getElementById("blockadd").style.display = "block";
+            $(".blocklist").append('<div onclick="jmp2()" data-id="' + name + '">' + pic[i] + '<u>' + name + '</u></div>');
         }
     })
-
-
 </script>
 </body>
 </html>

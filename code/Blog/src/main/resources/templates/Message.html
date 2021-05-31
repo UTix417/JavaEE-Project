@@ -42,7 +42,6 @@
 <body>
     <div class="container">
         <div class="userlist">
-            <a  class="btn btn-inverse btn-sm"  onclick="back_to_main()" style="font-size: 15px">返回主页</a>
             <div class="friendlistWrapper">
                 <div><b>好友列表：</b></div>
                 <div class="friendlist"></div>
@@ -86,10 +85,25 @@
                 currentUserId=userid;//存储现在会话的用户窗口
             });
             window["userArr"] = users;
+            var MessageTo=sessionStorage.getItem("MessageTo");
             $(".friendlist").empty();
             for (let i = 0; i < users.length; i++) {
                 let id = users[i].userId;
                 let username = users[i].userName;
+                if(id==MessageTo&&id!=currentUserId){
+                    $(".friendlist").append('<div class="userRow form-control" data-id="' + id + '"><span>' + username + '</span></div>');
+                    $(".toFriend").text(username + account);
+                    $(".toFriend").attr("toId", id);
+                    data["toId"]=id;
+                    $(".chatarea").show();
+                    $(".msghisDiv div[class^=his_]").hide();
+                    if ($(".msghisDiv .his_" + id).length == 0) {
+                        $(".msghisDiv").append('<div class="his_' + id + '"></div>');
+                    }
+                    $(".msghisDiv .his_" + id).show();
+                    $(".userRow[data-id=" + id + "]").addClass("activeFriend");
+                    continue;
+                }
                 $(".friendlist").append('<div class="userRow form-control" data-id="' + id + '"><span>' + username + '</span></div>');
             }
             $(".userRow").on("dblclick", function(e) {
@@ -151,14 +165,12 @@
                     console.log(message);
                     let data=JSON.parse(message.data);
                     $(".msghisDiv").empty();//刷新对话区域
-                    $("#msgarea form-control").val("");
                     for(let i=0;i<data.length;i++){
-                        let fromId=data[i].user1.userId;
-                        let fromname=data[i].user1.userName;
+                        let fromId=data[i].user1;
                         let context=data[i].messageContent;
                         let Time=data[i].messageSendTime;
                         $(".msghisDiv").append('<div class="his_' + fromId + '"></div>');
-                        $(".msghisDiv .his_" + fromId).append('<div>'+fromname+ ':' +moment(Time).format('YYYY-MM-DD h:mm:ss')  + '<br>' + context + '<div>');
+                        $(".msghisDiv .his_" + fromId).append('<div>' +moment(Time).format('YYYY-MM-DD h:mm:ss')  + '<br>' + context + '<div>');
                         }
                     $(".chatarea").show();
                 };
@@ -194,10 +206,7 @@
                 socket.send(JSON.stringify(data));
             }
         }
-        function back_to_main()
-        {
-            location.href = "main.html";
-        }
+
     </script>
 </body>
 </html>

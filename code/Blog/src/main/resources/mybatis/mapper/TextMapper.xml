@@ -7,7 +7,7 @@
     <select id="getTextsByBlockId" resultMap="text">
         select text_id,text_title,text_Status,text_create_time,block_id,text.user_id,user_name,user_level,user_image_path
         from text,user
-        where text.user_id = user.user_id and block_id = #{blockId} and text_status = #{textStatus}
+        where text.user_id = user.user_id and block_id = #{blockId}
     </select>
 
     <select id="getTextsByTitle" resultMap="text">

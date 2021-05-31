@@ -19,5 +19,4 @@ public class Page {
     private Date pageRetime;
     private String pageContent;
     private User user;
-    private Integer replyFor;
 }

@@ -28,10 +28,4 @@ public interface PageMapper {
     //根据帖子id查找发帖人
     public int getTextmaster(int textId);
 
-    //输入帖子的id，置顶该帖子
-    public int TopPage(int textId);
-
-    //使帖子状态恢复为1，正常
-    public int PageBack(int textId);
-
 }

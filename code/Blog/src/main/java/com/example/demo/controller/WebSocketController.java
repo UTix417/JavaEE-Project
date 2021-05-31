@@ -56,12 +56,16 @@ public class WebSocketController {
     public void onMessage(String dataStr,Session session){
         JSONObject data = JSON.parseObject(dataStr);
         String type=data.getString("type");
-        System.out.println(data);
+        //System.out.println(dataStr);
         log.info(dataStr);
         UserMapper userMapper= applicationContext.getBean(UserMapper.class);
         MessageMapper messageMapper=applicationContext.getBean(MessageMapper.class);
         if(!StringUtils.isEmpty(type) && "heartbeat".equals(type)){
-
+            List<Message> messages=messageMapper.getAllMessageByUserId(data.getInteger("fromId"),data.getInteger("toId"));
+            messages.addAll(messageMapper.getAllMessageByUserId(data.getInteger("toId"),data.getInteger("fromId")));
+            Collections.sort(messages);
+            log.info(JSON.toJSONString(messages));
+            session.getAsyncRemote().sendText(JSON.toJSONString(messages));
         }else{
             Integer fromId=data.getInteger("fromId");
             Integer toId=data.getInteger("toId");
@@ -69,18 +73,13 @@ public class WebSocketController {
             log.info("checkpoint");
             User from=userMapper.getUserById((fromId));
             log.info("after mapper");
-            User to=userMapper.getUserById((toId));
+            User to=userMapper.getUserById((fromId));
             message.setUser1(from);
             message.setUser2(to);
             message.setMessageContent(data.getString("context"));
             message.setMessageSendTime(new Date());
             messageMapper.addMessage(message);
         }
-        List<Message> messages=messageMapper.getAllMessageByUserId(data.getInteger("fromId"),data.getInteger("toId"));
-        messages.addAll(messageMapper.getAllMessageByUserId(data.getInteger("toId"),data.getInteger("fromId")));
-        Collections.sort(messages);
-        log.info(JSON.toJSONString(messages));
-        session.getAsyncRemote().sendText(JSON.toJSONString(messages));
         log.info("End");
     }
 }

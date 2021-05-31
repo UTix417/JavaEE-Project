@@ -14,7 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 
 /**
@@ -62,32 +63,12 @@ public class UserController {
         User user = (User) session.getAttribute("user");
         return user;
     }
-    @ResponseBody
-    @RequestMapping("/banUser/{id}")
-    public int banUser(@PathVariable("id") int userId,HttpSession session){
-        User now_user= (User) session.getAttribute("user");
-        Integer userLevel = now_user.getUserLevel();
-        System.out.println(userLevel);
 
-        Date date = new Date(); //取时间
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(date);
-        calendar.add(calendar.DATE,1); //把日期往后增加一天,整数  往后推,负数往前移动
-        date=calendar.getTime(); //这个时间就是日期往后推一天的结果
-
-        if (userLevel<3)//3等级以上的人才能BAN用户
-            return -1;
-        return userMapper.banUser(userId,date);
-    }
     //本方法用来实现用户更新自己的信息,传所有要更新的User属性就可以，但UserId是必备的，同时密码不应该在这里修改
     @ResponseBody
     @RequestMapping("/updateInfo")
-    public User updateUserInfo(@RequestBody Map<String,Object> map){
-        System.out.println(map);
-        User user = new User();
-        user.setUserId((Integer) map.get("userId"));
-        user.setUserName((String) map.get("userName"));
-        System.out.println(user);
+    public User updateUserInfo(int userId,String userName,String img){
+        User user = new User(userId, userName, null, null, null, null, img);
         userMapper.updateUser(user);
         return user;
     }
@@ -143,5 +124,15 @@ public class UserController {
 //        return res;
 //    }
 
+    //本方法用来封禁一个用户请传入用户Id和解封时间,0代表封禁失败
+    @ResponseBody
+    @RequestMapping()
+    public int banUser(int userId,Date outTime,HttpSession session){
+        User now_user= (User) session.getAttribute("user");
+        Integer userLevel = now_user.getUserLevel();
+        if (userLevel<3)//3等级以上的人才能BAN用户
+            return -1;
+        return userMapper.banUser(userId,outTime);
+    }
 
 }

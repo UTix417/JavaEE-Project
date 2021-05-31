@@ -20,7 +20,6 @@ public class MyMVCConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/visit").setViewName("visit");
         registry.addViewController("/index.html").setViewName("index");
         registry.addViewController("/").setViewName("Login");
         registry.addViewController("/Login.html").setViewName("Login");
@@ -28,6 +27,6 @@ public class MyMVCConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/**").excludePathPatterns("/visit","/Login","/Login.html","/index.html","/login","/","/img/**","/webjars/**");
+        registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/**").excludePathPatterns("/Login","/Login.html","/index.html","/login","/","/img/**","/webjars/**");
     }
 }
