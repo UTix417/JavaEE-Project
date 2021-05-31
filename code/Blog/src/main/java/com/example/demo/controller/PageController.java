@@ -116,6 +116,8 @@ public class PageController {
         System.out.println("in reply");
         int pageFloor = pageMapper.getMaxFloor(textId);
         User user = (User) session.getAttribute("user");
+        if(user.getUserState()==1)
+            return "回复失败";
         Page page = new Page(textId, pageFloor+1, new Date(), pageContent, user,replyFor);
         System.out.println(page);
         pageMapper.addPage(page);
