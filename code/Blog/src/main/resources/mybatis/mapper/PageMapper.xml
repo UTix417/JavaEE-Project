@@ -31,7 +31,7 @@
     </update>
 
     <delete id="deletePage">
-        delete from page where text_id = #{textId} and page_floor = #{pageFloor}
+        update text set text_status=0 where text_id = #{textId}
     </delete>
 
     <select id="getMaxFloor" resultType="int">

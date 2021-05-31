@@ -95,12 +95,8 @@
           "pageFloor":0
         },
         success: function (result) {//result:响应的数据
-          if (result == 0) {
             alert('封禁成功'); // 请求成功时的回调函数
             location.reload();
-          } else {
-            alert('封禁失败,权限出错');
-          }
         },
         error: function () {
           alert('封禁失败'); // 请求失败时的回调函数
@@ -298,7 +294,9 @@
       var userimg = user.userImagePath;
       console.log("实例化");
       console.log(userlevel);
-      createtable(userlevel, textstatus, textid, texttitle, createtime, userid, username, userimg, "text");
+      if(textstatus!=0){
+        createtable(userlevel, textstatus, textid, texttitle, createtime, userid, username, userimg, "text");
+      }
     }
     //document.getElementById("text").appendChild(ul);
   }
