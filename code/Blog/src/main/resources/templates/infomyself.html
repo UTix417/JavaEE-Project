@@ -199,7 +199,7 @@
                 $.ajax({
                     type:"POST",
                     url:"/user/updateInfo",
-                    dataType : "json",
+                    dataType : "text",
                     data:JSON.stringify(user),
                     contentType:"application/json;charset=UTF-8",
                     success: function (result) {//result:响应的数据
@@ -231,7 +231,7 @@
             $.ajax({
                 url: "/user/updatePassword/"+userid,
                 type: "post",
-                dataType: "json",
+                dataType: "text",
                 data : {
                     "oldPassword": oldkey,
                     "newPassword": newkey
@@ -263,7 +263,7 @@
             $.ajax({
                 url: "/user/inviteUpLevel",
                 type: "post",
-                dataType: "json",
+                dataType: "text",
                 data : {
                     "inviteCode": document.getElementById("invited_code").value,
                 },
@@ -272,6 +272,7 @@
                         //这里的路径是相对于js的路径
                         alert("升级成功");
                         document.getElementById("colinvited").click();
+                        window.location.reload();
                         //成功后自动折叠
                     }
                     else
